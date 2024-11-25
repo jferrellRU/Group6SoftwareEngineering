@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Assuming you have a db configuration file
+const db = require('../config/db.config.js'); // Assuming you have a db configuration file
 
 // Get all products
 exports.getAllProducts = (req, res) => {
