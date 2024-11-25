@@ -1,3 +1,6 @@
+-- this file is not technially needed as we are using models to create tables
+-- but it is good to have a schema file to see the structure of the database
+
 CREATE TABLE Users (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100),

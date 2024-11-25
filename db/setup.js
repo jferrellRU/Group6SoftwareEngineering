@@ -17,3 +17,7 @@ async function initializeDatabase() {
 }
 
 initializeDatabase();
+
+// This script reads the schema.sql file and initializes the database by executing the SQL commands in the file.
+// It uses the db connection from the config/db.config.js file to execute the queries.
+
