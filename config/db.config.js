@@ -1,13 +1,14 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'mydatabase'
-};
+// Database connection pool
+const db = mysql.createPool({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'password',
+    database: process.env.DB_NAME || 'mydatabase',
+    multipleStatements: true // Allow multiple statements (for schema.sql import)
+});
 
-const connection = mysql.createConnection(dbConfig);
 
 connection.connect(error => {
     if (error) {
@@ -17,4 +18,4 @@ connection.connect(error => {
     console.log('Connected to the database as id ' + connection.threadId);
 });
 
-module.exports = connection;
+module.exports = db.promise(); // Use promises for async/await
