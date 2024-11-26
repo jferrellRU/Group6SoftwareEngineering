@@ -8,10 +8,27 @@
 </head>
 
 <body>
-    <a href="index.html">Go to Home Page</a>
-    <a href="orders.html">Orders</a>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div id="header-container"></div> <!-- This is where the header will be injected -->
+
+        <script>
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        </script>
+
+        <!-- Your page content goes here -->
+    </body>
     <header>
         <h1>Shopping Cart</h1>
+        <a href="orders.html">Previous Orders</a>
     </header>
     <main>
         <section class="cart-items">
