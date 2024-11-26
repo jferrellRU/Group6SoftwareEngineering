@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Retail Store</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="cart.html"><img src="../jpgs/shoppingcart.jpg" alt="Cart" style="width:24px; height:24px;"></a></li>
-                <li><a href="login.html"><img src="../jpgs/Icon.jpg" alt="Login" style="width:24px; height:24px;"></a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <section id="home">
-        <h1>Welcome to Dizzy Designs</h1>
-        <p>Discover the best products at unbeatable prices.</p>
-        <a href="#products" class="btn">Shop Now</a>
-    </section>
-    
+</html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div id="header-container"></div> <!-- This is where the header will be injected -->
+
+        <script>
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        </script>
+
+        <!-- Your page content goes here -->
+    </body>
     <section id="products">
         <h2>Featured Products</h2>
         <div class="product-grid">

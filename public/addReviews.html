@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div id="header-container"></div> <!-- This is where the header will be injected -->
+
+        <script>
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        </script>
+
+        <!-- Your page content goes here -->
+    </body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .product {
+            margin-bottom: 40px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            max-width: 200px;
+            display: block;
+        }
+        .reviews, .form-container {
+            margin-top: 20px;
+        }
+        .review {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .form-container input, .form-container textarea, .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="product-list"></div>
+
+<script>
+// Product data
+const products = [
+    { id: 1, name: "Cozy Sweater", image: "https://via.placeholder.com/200" },
+];
+
+// Dynamically generate products
+const productList = document.getElementById("product-list");
+products.forEach(product => {
+    const productDiv = document.createElement("div");
+    productDiv.id = `product-${product.id}`;
+    productDiv.className = "product";
+
+    productDiv.innerHTML = `
+        <h2>${product.name}</h2>
+        <img src="${product.image}" alt="${product.name}">
+        <div class="reviews" id="reviews-${product.id}">
+            <!-- Reviews will be dynamically loaded -->
+        </div>
+        <div class="form-container">
+            <h3>Write a Review:</h3>
+            <form onsubmit="submitReview(event, ${product.id}, 101)"> <!-- Assuming UserID = 101 -->
+                <select required>
+                    <option value="" disabled selected>Rating</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                </select>
+                <textarea rows="4" placeholder="Write your review here..." required></textarea>
+                <button type="submit">Submit Review</button>
+            </form>
+        </div>
+    `;
+
+    productList.appendChild(productDiv);
+
+    // Load reviews for each product
+    loadReviews(product.id);
+});
+
+// Load reviews dynamically
+function loadReviews(productId) {
+    console.log(`Loading reviews for Product ID: ${productId}`);
+    // Replace the console log with an API call or dynamic review loading logic
+    // Example: Fetch reviews for this product and populate the reviews container
+    const reviewsContainer = document.getElementById(`reviews-${productId}`);
+    reviewsContainer.innerHTML += "<p>Sample review for Product ID " + productId + "</p>";
+}
+
+// Submit a review
+function submitReview(event, productId, userId) {
+    event.preventDefault();
+    const form = event.target;
+    const rating = form.querySelector("select").value;
+    const comment = form.querySelector("textarea").value;
+
+    console.log(`Submitting review for Product ID: ${productId}, User ID: ${userId}, Rating: ${rating}, Comment: "${comment}"`);
+
+    // Example: POST the review data to your backend
+    // fetch('/reviews', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ userId, productId, rating, comment })
+    // }).then(() => {
+    //     loadReviews(productId); // Reload reviews after submission
+    //     form.reset();
+    // });
+}
+
+function updateReview(event, productId, userId) {
+    event.preventDefault();
+    const form = event.target;
+    const rating = form.querySelector("select").value;
+    const comment = form.querySelector("textarea").value;
+
+    console.log(`Updating review for Product ID: ${productId}, User ID: ${userId}, Rating: ${rating}, Comment: "${comment}"`);
+
+    method:PUT
+}
+
+function deleteReview(event, productId, userId) {
+    event.preventDefault();
+    const form = event.target;
+    const rating = form.querySelector("select").value;
+    const comment = form.querySelector("textarea").value;
+
+    console.log(`Deleting review for Product ID: ${productId}, User ID: ${userId}, Rating: ${rating}, Comment: "${comment}"`);
+
+    method:Delete
+}
+</script>
