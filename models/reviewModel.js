@@ -24,6 +24,18 @@ const getReviewsByProductId = async (productId) => {
     });
 };
 
+const getReviewsByUserId = async (userId) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM Reviews WHERE UserID = ?';
+        db.query(query, [userId], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+};
+
 const getReviewById = async (reviewId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM Reviews WHERE ReviewID = ?';
@@ -83,6 +95,7 @@ const deleteReview = async (reviewId) => {
 module.exports = {
     getAllReviews,
     getReviewsByProductId,
+    getReviewsByUserId,
     getReviewById,
     createReview,
     updateReview,

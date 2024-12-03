@@ -14,6 +14,10 @@ const reviewRoutes = (req, res) => {
         // GET /reviews/product/:productId - Get reviews for a specific product
         const productId = path.split('/')[3]; // Extract productId from URL
         reviewHandler.getReviewsByProductId(req, res, productId);
+    } else if (path.match(/^\/reviews\/user\/\d+$/) && method === 'GET') {
+        // GET /reviews/user/:userId - Get reviews for a specific user
+        const userId = path.split('/')[3]; // Extract userId from URL
+        reviewHandler.getReviewsByUserId(req, res, userId);
     } else if (path.match(/^\/reviews\/\d+$/) && method === 'GET') {
         // GET /reviews/:id - Get review by ID
         const reviewId = path.split('/')[2]; // Extract reviewId from URL

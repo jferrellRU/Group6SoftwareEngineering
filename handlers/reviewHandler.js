@@ -22,6 +22,16 @@ exports.getReviewsByProductId = (req, res) => {
     });
 };
 
+exports.getReviewsByUserId = (req, res) => {
+    const query = 'SELECT * FROM reviews WHERE userId = ?';
+    db.query(query, [req.params.userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(200).json(results);
+    });
+};
+
 // Get a single review by ID
 exports.getReviewById = (req, res) => {
     const query = 'SELECT * FROM reviews WHERE id = ?';
