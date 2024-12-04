@@ -1,35 +1,36 @@
-const http = require('http');
-const url = require('url');
+const express = require('express');
+const path = require('path');
+
+// Import routes
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
-const PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 8000;
 
-// Main server
-const server = http.createServer((req, res) => {
-    // Parse the incoming request URL
-    const parsedUrl = url.parse(req.url, true);
-    const path = parsedUrl.pathname.toLowerCase();
+// Middleware to parse JSON and static files
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-    // Pass the request and response to the appropriate routes based on the URL
-    if (path.startsWith('/users')) {
-        userRoutes(req, res);
-    } else if (path.startsWith('/orders')) {
-        orderRoutes(req, res);
-    } else if (path.startsWith('/products')) {
-        productRoutes(req, res);
-    } else if (path.startsWith('/reviews')) {
-        reviewRoutes(req, res);
-    } else {
-        // Default 404 response for unknown routes
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Route not found' }));
-    }
+// API routes
+app.use('/users', userRoutes);
+app.use('/orders', orderRoutes);
+app.use('/products', productRoutes);
+app.use('/reviews', reviewRoutes);
+
+// Serve index.html for root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Handle 404 for unknown routes
+app.use((req, res) => {
+    res.status(404).json({ error: 'Route not found' });
+});
 
-server.listen(PORT, () => {
+// Start the server
+app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

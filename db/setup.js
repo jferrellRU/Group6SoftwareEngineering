@@ -1,23 +1,25 @@
-const fs = require('fs');
-const path = require('path');
-const db = require('../config/db.config');
-
-const schemaPath = path.join(__dirname, 'schema.sql');
+const mongoose = require('mongoose');
+const dbConfig = require('../config/db.config');
 
 async function initializeDatabase() {
     try {
-        const schema = fs.readFileSync(schemaPath, 'utf8');
-        await db.query(schema);
+        await mongoose.connect(dbConfig.uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Database connected successfully');
+
+        // Define your models and initialize collections here
+        // Example:
+        // const User = mongoose.model('User', new mongoose.Schema({ name: String }));
+        // await User.createCollection();
+
         console.log('Database initialized successfully');
     } catch (err) {
         console.error('Error initializing database:', err.message);
     } finally {
-        process.exit(); // Exit script after execution
+        mongoose.connection.close(); // Close the connection after execution
     }
 }
 
 initializeDatabase();
-
-// This script reads the schema.sql file and initializes the database by executing the SQL commands in the file.
-// It uses the db connection from the config/db.config.js file to execute the queries.
-

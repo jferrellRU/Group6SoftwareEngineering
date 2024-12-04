@@ -1,18 +1,14 @@
-const db = require('../config/db.config'); // Your database connection
+const mongoose = require('mongoose');
 
-// Fetch a user by ID
-const getUserById = async (userId) => {
-    const [rows] = await db.query('SELECT * FROM Users WHERE UserID = ?', [userId]);
-    return rows[0];
-};
+// Define the User schema
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    address: { type: String, required: true },
+}, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
 
-// Create a new user
-const createUser = async (name, email, password, address) => {
-    const [result] = await db.query(
-        'INSERT INTO Users (Name, Email, Password, Address) VALUES (?, ?, ?, ?)',
-        [name, email, password, address]
-    );
-    return result.insertId; // Return the new UserID
-};
+// Create the User model
+const User = mongoose.model('User', userSchema);
 
-module.exports = { getUserById, createUser };
+module.exports = User;

@@ -1,96 +1,78 @@
-const url = require('url');
+const User = require('../models/userModel'); // Import the User model
 
-// Utility to parse the request body
-const parseRequestBody = (req) => {
-    return new Promise((resolve, reject) => {
-        let body = '';
-        req.on('data', (chunk) => {
-            body += chunk.toString();
-        });
-        req.on('end', () => {
-            try {
-                resolve(JSON.parse(body));
-            } catch (err) {
-                reject(err);
-            }
-        });
-    });
-};
-
-const getUsers = (req, res) => {
-    // Logic to get users
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: 'Get all users', users: [] })); // Example response
-};
-
-const getUserById = (req, res, userId) => {
-    // Logic to get user by ID
-    if (!userId) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'User ID is required' }));
-        return;
+// Get all users
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find(); // Fetch all users from the database
+        res.status(200).json({ message: 'Get all users', users });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: `Get user with ID: ${userId}` }));
 };
 
+// Get a user by ID
+const getUserById = async (req, res) => {
+    const userId = req.params.userId;
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+    try {
+        const user = await User.findById(userId); // Fetch the user by ID
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: `Get user with ID: ${userId}`, user });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Create a new user
 const createUser = async (req, res) => {
+    const { name, email, password } = req.body; // Example fields
     try {
-        const newUser = await parseRequestBody(req);
-        // Logic to create a new user
-        res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'User created', user: newUser }));
+        const newUser = new User({ name, email, password }); // Create a new user instance
+        const savedUser = await newUser.save(); // Save the user to the database
+        res.status(201).json({ message: 'User created', user: savedUser });
     } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid request body' }));
+        res.status(500).json({ error: err.message });
     }
 };
 
-const updateUser = async (req, res, userId) => {
+// Update an existing user
+const updateUser = async (req, res) => {
+    const userId = req.params.userId;
+    const updatedData = req.body;
     try {
-        const updatedUser = await parseRequestBody(req);
-        // Logic to update user
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: `User with ID: ${userId} updated`, user: updatedUser }));
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            updatedData,
+            { new: true } // Return the updated document
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: `User with ID: ${userId} updated`, user: updatedUser });
     } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid request body' }));
+        res.status(500).json({ error: err.message });
     }
 };
 
-const deleteUser = (req, res, userId) => {
-    // Logic to delete user
+// Delete a user
+const deleteUser = async (req, res) => {
+    const userId = req.params.userId;
     if (!userId) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'User ID is required' }));
-        return;
+        return res.status(400).json({ error: 'User ID is required' });
     }
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: `User with ID: ${userId} deleted` }));
-};
-
-const requestHandler = (req, res) => {
-    const parsedUrl = url.parse(req.url, true);
-    const path = parsedUrl.pathname;
-    const method = req.method;
-
-    if (path === '/users' && method === 'GET') {
-        getUsers(req, res);
-    } else if (path.match(/^\/users\/\w+$/) && method === 'GET') {
-        const userId = path.split('/')[2];
-        getUserById(req, res, userId);
-    } else if (path === '/users' && method === 'POST') {
-        createUser(req, res);
-    } else if (path.match(/^\/users\/\w+$/) && method === 'PUT') {
-        const userId = path.split('/')[2];
-        updateUser(req, res, userId);
-    } else if (path.match(/^\/users\/\w+$/) && method === 'DELETE') {
-        const userId = path.split('/')[2];
-        deleteUser(req, res, userId);
-    } else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Route not found' }));
+    try {
+        const deletedUser = await User.findByIdAndDelete(userId); // Delete the user by ID
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: `User with ID: ${userId} deleted` });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 };
 
-module.exports = requestHandler;
+module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };

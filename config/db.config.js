@@ -1,21 +1,17 @@
-const mysql = require('mysql2');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
-// Database connection pool
-const db = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'password',
-    database: process.env.DB_NAME || 'mydatabase',
-    multipleStatements: true // Allow multiple statements (for schema.sql import)
+const dbURI = process.env.MONGODB_URI;
+console.log(dbURI);
+
+mongoose.connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
 });
 
-
-connection.connect(error => {
-    if (error) {
-        console.error('Error connecting to the database:', error.stack);
-        return;
-    }
-    console.log('Connected to the database as id ' + connection.threadId);
-});
-
-module.exports = db.promise(); // Use promises for async/await
+module.exports = { mongoose, dbURI };
