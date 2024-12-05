@@ -26,11 +26,13 @@ const getProductById = async (req, res) => {
 // Create a new product
 const createProduct = async (req, res) => {
     try {
-        const { name, price, description } = req.body;
-        const newProduct = new Product({ name, price, description }); // Create a new product
+        console.log('Received request body:', req.body); // Log the incoming data
+        const newProduct = new Product(req.body); // Create a new product
         const savedProduct = await newProduct.save(); // Save it to the database
+        console.log('Saved product:', savedProduct);
         res.status(201).json({ message: 'Product created', productId: savedProduct._id });
     } catch (err) {
+        console.error('Error saving product:', err.message);
         res.status(500).json({ error: err.message });
     }
 };

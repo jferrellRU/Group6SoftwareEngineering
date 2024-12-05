@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+require('./config/db.config');
+
 
 // Import routes
 const orderRoutes = require('./routes/orderRoutes');
@@ -23,6 +25,10 @@ app.use('/reviews', reviewRoutes);
 // Serve index.html for root path
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/createProduct', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'addProducts.html'));
 });
 
 // Handle 404 for unknown routes
