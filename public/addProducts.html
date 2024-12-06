@@ -1,27 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
-    </head>
-    <body>
-        <div id="header-container"></div> <!-- This is where the header will be injected -->
-
-        <script src="addProducts.js" defer></script>
-
-        <!-- Your page content goes here -->
-    </body>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Product</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="addProducts.js" defer></script>
 </head>
-
 <body>
     <h1>Add New Product</h1>
-    <form  method="POST" id="addProductForm">
+    <form method="POST" id="addProductForm">
         <div>
             <label for="productName">Product Name:</label>
             <input type="text" id="productName" name="productName" required>
@@ -36,12 +24,18 @@
         </div>
         <div>
             <label for="productImage">Product Image URL:</label>
-            <input type="url" id="productImage" name="productImage" >
+            <input type="url" id="productImage" name="productImage">
+        </div>
+        <div>
+            <label for="stockQuantity">Stock Quantity:</label>
+            <input type="number" id="stockQuantity" name="stockQuantity">
         </div>
         <div>
             <button id="addProductButton" type="submit">Add Product</button>
         </div>
     </form>
+
+    <!-- Optional: File upload form for image -->
     <form action="/uploadImage" method="POST" enctype="multipart/form-data">
         <div>
             <label for="productImageFile">Upload Product Image:</label>
@@ -51,6 +45,5 @@
             <button type="submit">Upload Image</button>
         </div>
     </form>
-    
 </body>
 </html>
