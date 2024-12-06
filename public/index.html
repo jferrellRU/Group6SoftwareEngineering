@@ -1,68 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-</html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
-    </head>
-    <body>
-        <div id="header-container"></div> <!-- This is where the header will be injected -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
 
-        <script>
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                });
-        </script>
+    <!-- This is where the header will be injected -->
+    <div id="header-container"></div>
 
-        <!-- Your page content goes here -->
-    </body>
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-container').innerHTML = data;
+            });
+    </script>
+
+    <!-- Featured Products Section -->
     <section id="products">
         <h2>Featured Products</h2>
-        <div class="product-grid">
-            <div class="product">
-                <img src="../jpgs/redPants.jpg"style="width: 200px; height: auto;" alt="Red Pants">
-                <h3>Red Pants</h3>
-                <p>$19.99</p>
-            </div>
-            <div class="product">
-                <img src="product2.jpg" alt="Product 2">
-                <h3>Product 2</h3>
-                <p>$29.99</p>
-            </div>
-            <div class="product">
-                <img src="product3.jpg" alt="Product 3">
-                <h3>Product 3</h3>
-                <p>$39.99</p>
-            </div>
+        <div class="product-grid" id="product-grid">
+            <!-- Products will be dynamically injected here -->
         </div>
     </section>
-    
-    <section id="about">
-        <h2>About Us</h2>
-        <p>We are a leading online retail store committed to providing the best products and services to our customers.</p>
-    </section>
-    
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            
-            <button type="submit">Send</button>
-        </form>
-    </section>
-    
+
+    <!-- Footer Section -->
     <footer>
-        <p>&copy; 2023 Online Retail Store. All rights reserved.</p>
+        <p>&copy; 2024 Online Retail Store. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Fetch products from the backend and display them with images as buttons
+        fetch('/products')
+            .then(response => response.json())
+            .then(products => {
+                const productGrid = document.getElementById('product-grid');
+                products.forEach(product => {
+                    const productElement = document.createElement('div');
+                    productElement.classList.add('product');
+                    
+                    // Ensure imageURL field is correct and handle missing images
+                    const imageUrl = product.imageURL; // Fallback to default image
+
+                    // Wrap the image inside an anchor tag to act as a link
+                    productElement.innerHTML = `
+                        <a href="/productDetails.html?id=${product._id}">
+                            <img src="${imageUrl}" style="width: 200px; height: auto;" alt="${product.name}" onError="this.onerror=null;this.src='path/to/default-image.jpg';">
+                        </a>
+                        <h3>${product.name}</h3>
+                        <p>$${product.price}</p>
+                    `;
+                    productGrid.appendChild(productElement);
+                });
+            })
+            .catch(error => console.error('Error fetching products:', error));
+    </script>
+
 </body>
-</html></section></div>
+</html>
