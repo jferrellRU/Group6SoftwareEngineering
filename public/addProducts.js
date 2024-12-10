@@ -1,3 +1,13 @@
+// header
+
+fetch('header.html')
+.then(response => response.text())
+.then(data => {
+    document.getElementById('header-container').innerHTML = data;
+});
+
+// formfield for adding products
+
 document.getElementById('addProductForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('productName').value;
