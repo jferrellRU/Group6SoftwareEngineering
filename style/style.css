@@ -1,0 +1,86 @@
+/* General Body Styling */
+body {
+    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply the custom font globally */
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* White background */
+}
+
+/* Header Section Styling */
+header {
+    text-align: center;
+    padding: 20px 10px;
+    background-color: #ffffff; /* White background */
+}
+
+header .logo {
+    max-width: 300px; /* Resize logo */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto;
+}
+
+header .subtitle {
+    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply Shadow font to subtitle */
+    font-size: 25px;
+    font-weight: bold;
+    color: #0066ff; /* Bright blue for subtitle */
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Navigation Bar Styling */
+nav {
+    background-color: #0066ff; /* Dark blue background */
+    padding: 65px 0;
+    border-top: 5px solid #ffde59; /* Yellow line above */
+    border-bottom: 5px solid #ffde59; 
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center navigation links */
+}
+
+nav ul li {
+    margin: 0 80px; /* Space between nav items */
+}
+
+nav ul li a {
+    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply Extras font to navigation links */
+    text-decoration: none;
+    font-size: 50px;
+    font-weight: thin;
+    text-transform: uppercase;
+    color: #ffde59; /* Gold text */
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: white; /* White on hover */
+}
+
+nav ul li img {
+    width: 30px; /* Icon size */
+    height: 30px; /* Icon size */
+}
+
+/* Font Face Definitions */
+@font-face {
+    font-family: 'Sprite Graffiti';
+    src: url('../font/SpriteGraffiti.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Sprite Graffiti Shadow';
+    src: url('../font/SpriteGraffitiShadow.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Sprite Graffiti Extras';
+    src: url('../font/SpriteGraffitiExtras.otf') format('opentype');
+}
