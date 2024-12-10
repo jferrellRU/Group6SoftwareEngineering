@@ -4,6 +4,7 @@
   "main": "app.js",
   "type": "commonjs",
   "scripts": {
+    "start": "npx webpack && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:setup": "node db/setup.js"
   },
@@ -11,14 +12,27 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "mongoose": "^8.8.3",
-    "nodemon": "^3.1.7"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "jasmine": "^5.5.0"
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "jasmine": "^5.5.0",
+    "nodemon": "^3.1.7",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
   },
   "description": ""
 }

@@ -1,6 +1,6 @@
 /* General Body Styling */
 body {
-    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply the custom font globally */
+    font-family: 'Sprite Graffiti', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #ffffff; /* White background */
@@ -14,17 +14,17 @@ header {
 }
 
 header .logo {
-    max-width: 300px; /* Resize logo */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 80%; /* Responsive logo size */
+    height: auto;
     display: block;
     margin: 0 auto;
 }
 
 header .subtitle {
-    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply Shadow font to subtitle */
+    font-family: 'Sprite Graffiti', Arial, sans-serif;
     font-size: 25px;
     font-weight: bold;
-    color: #0066ff; /* Bright blue for subtitle */
+    color: #0066ff;
     margin-top: 10px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -33,9 +33,9 @@ header .subtitle {
 /* Navigation Bar Styling */
 nav {
     background-color: #0066ff; /* Dark blue background */
-    padding: 65px 0;
-    border-top: 5px solid #ffde59; /* Yellow line above */
-    border-bottom: 5px solid #ffde59; 
+    padding: 20px 0; /* Adjusted padding for smaller screens */
+    border-top: 5px solid #ffde59;
+    border-bottom: 5px solid #ffde59;
 }
 
 nav ul {
@@ -43,17 +43,18 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center; /* Center navigation links */
+    justify-content: center;
+    flex-wrap: wrap; /* Allow nav items to wrap on small screens */
 }
 
 nav ul li {
-    margin: 0 80px; /* Space between nav items */
+    margin: 10px 20px; /* Reduced spacing for smaller screens */
 }
 
 nav ul li a {
-    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply Extras font to navigation links */
+    font-family: 'Sprite Graffiti', Arial, sans-serif;
     text-decoration: none;
-    font-size: 50px;
+    font-size: 24px; /* Smaller text for navigation links */
     font-weight: thin;
     text-transform: uppercase;
     color: #ffde59; /* Gold text */
@@ -65,8 +66,8 @@ nav ul li a:hover {
 }
 
 nav ul li img {
-    width: 30px; /* Icon size */
-    height: 30px; /* Icon size */
+    width: 20px; /* Adjusted icon size for smaller screens */
+    height: 20px;
 }
 
 /* Font Face Definitions */
@@ -83,4 +84,56 @@ nav ul li img {
 @font-face {
     font-family: 'Sprite Graffiti Extras';
     src: url('../font/SpriteGraffitiExtras.otf') format('opentype');
+}
+
+/* Media Queries */
+
+/* For small screens (mobile) */
+@media only screen and (max-width: 600px) {
+    header .subtitle {
+        font-size: 20px; /* Smaller subtitle font size */
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack nav items vertically */
+        padding: 10px 0;
+    }
+
+    nav ul li {
+        margin: 10px 0; /* Vertical spacing between nav items */
+    }
+
+    nav ul li a {
+        font-size: 18px; /* Smaller font size for mobile */
+    }
+}
+
+/* For medium screens (tablet) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    header .subtitle {
+        font-size: 22px;
+    }
+
+    nav ul li a {
+        font-size: 22px; /* Slightly smaller nav font for tablets */
+    }
+
+    nav ul li {
+        margin: 5px 15px; /* Adjust spacing for medium screens */
+    }
+}
+
+/* For large screens (desktop) */
+@media only screen and (min-width: 1025px) {
+    header .subtitle {
+        font-size: 30px; /* Larger font size for subtitles */
+    }
+
+    nav ul li a {
+        font-size: 30px; /* Larger nav font for desktops */
+    }
+
+    nav ul li {
+        margin: 0 80px; /* Restore original spacing */
+    }
 }
