@@ -18,16 +18,16 @@ router.get('/:id', async (req, res) => {
 
 // POST: Upload an image
 router.post("/", async (req, res) => {
-    const { myFile, product } = req.body; // Extract fields from the request body
-    if (!myFile) {
+    const { image, product } = req.body; // Update 'myFile' to 'image'
+    if (!image) {
         return res.status(400).json({ message: "No file provided" });
     }
     try {
-        const newImage = await Image.create({ file: myFile, product });
+        const newImage = await Image.create({ file: image, product });
         await newImage.save();
-        res.status(201).json({ msg: "New image uploaded!" });
+        res.status(201).json({ msg: "New image uploaded!", image: newImage });
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 });
 
