@@ -7,6 +7,12 @@ const app = express();
 app.use(cors()); 
 const PORT = process.env.PORT || 8000;
 
+// Middleware to parse JSON and static files
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+
+
 // Import routes
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -17,14 +23,16 @@ const imageRoutes = require('./routes/imageRoutes');
 // API routes
 app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
-app.use('/products', productRoutes);
+app.use('/api/products', productRoutes);
 app.use('/reviews', reviewRoutes);
-app.use('/images', imageRoutes);
+app.use('/api/images', imageRoutes);
 
+// debug API 
+app.use('/api/products', (req, res, next) => {
+    console.log('Incoming product data:', req.body);
+    next();
+});
 
-// Middleware to parse JSON and static files
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static files 
 
@@ -49,6 +57,7 @@ app.use('/addproduct', express.static(path.join(__dirname, 'public/react')));
 app.get('/addproduct', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/react/index.html'));
 });
+
 
 // Handle 404 for unknown routes
 app.use((req, res) => {
