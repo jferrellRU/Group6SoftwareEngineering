@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import addproduct from '../styles/addproduct.css';
 
 const App = () => {
     const [formData, setFormData] = useState({
@@ -50,7 +51,7 @@ const App = () => {
             let imageId = null;
             if (imageFile) {
                 console.log("Uploading image...");
-                const imageResponse = await fetch('/api/images', {
+                const imageResponse = await fetch('/images', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ const App = () => {
     
             console.log('Product Data to be sent:', productData); // Debug log
     
-            const productResponse = await fetch('/api/products', {
+            const productResponse = await fetch('/products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -25,7 +25,7 @@ app.use('/users', userRoutes);
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/reviews', reviewRoutes);
-app.use('/api/images', imageRoutes);
+app.use('/images', imageRoutes);
 
 // Serve Static Assets
 app.use('/assets', express.static(path.join(__dirname, 'public'))); // Serve static assets like images, fonts, etc.
