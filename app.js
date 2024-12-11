@@ -1,64 +1,51 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');  // Import CORS middleware
+const cors = require('cors'); // Import CORS middleware
 require('./config/db.config');
 
 const app = express();
-app.use(cors()); 
 const PORT = process.env.PORT || 8000;
 
-// Import routes
+// Enable CORS for API access
+app.use(cors());
+
+// Middleware to parse JSON and URL-encoded data
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// API Routes
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 
-// API routes
+// Mount API routes
 app.use('/users', userRoutes);
+app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
-app.use('/api/products', productRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/api/images', imageRoutes);
 
+// Serve Static Assets
+app.use('/assets', express.static(path.join(__dirname, 'public'))); // Serve static assets like images, fonts, etc.
+app.use('/styles', express.static(path.join(__dirname, 'style'))); // Serve styles
+app.use('/images', express.static(path.join(__dirname, 'jpgs'))); // Serve images
 
-// Middleware to parse JSON and static files
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
 
-// Serve static files 
-
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/style', express.static(path.join(__dirname, 'style')));
-app.use('/jpgs', express.static(path.join(__dirname, 'jpgs')));
-app.use('/reactPage', express.static(path.join(__dirname, 'reactPage')));
-
-
-// Serve index.html for root path
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Handle all other routes by serving React's index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Serve the product details page
-app.get('/productDetails.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'productDetails.html'));
-});
-
-// Serve add Product page
-app.use('/addproduct', express.static(path.join(__dirname, 'public/react')));
-app.get('/addproduct', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/react/index.html'));
-});
-
-
-// Handle 404 for unknown routes
+// Handle 404 Errors for Unknown API Routes
 app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
+    res.status(404).json({ error: 'API route not found' });
 });
 
-// ---
-
-// Start the server
+// Start the Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

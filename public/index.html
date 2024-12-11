@@ -3,61 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="../style/style.css">
+    <title>React App</title>
 </head>
 <body>
-
-    <!-- This is where the header will be injected -->
-    <div id="header-container"></div>
-
-    <script>
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
-    </script>
-
-    <!-- Featured Products Section -->
-    <section id="products">
-        <h2>Featured Products</h2>
-        <div class="product-grid" id="product-grid">
-            <!-- Products will be dynamically injected here -->
-        </div>
-    </section>
-
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2024 Online Retail Store. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Fetch products from the backend and display them with images as buttons
-        fetch('/products')
-            .then(response => response.json())
-            .then(products => {
-                const productGrid = document.getElementById('product-grid');
-                products.forEach(product => {
-                    const productElement = document.createElement('div');
-                    productElement.classList.add('product');
-                    
-                    // Ensure imageURL field is correct and handle missing images
-                    const imageUrl = product.imageURL; // Fallback to default image
-
-                    // Wrap the image inside an anchor tag to act as a link
-                    productElement.innerHTML = `
-                        <a href="/productDetails.html?id=${product._id}">
-                            <img src="${imageUrl}" style="width: 200px; height: auto;" alt="${product.name}" onError="this.onerror=null;this.src='path/to/default-image.jpg';">
-                        </a>
-                        <h3>${product.name}</h3>
-                        <p>$${product.price}</p>
-                    `;
-                    productGrid.appendChild(productElement);
-                });
-            })
-            .catch(error => console.error('Error fetching products:', error));
-    </script>
-
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
 </body>
 </html>
