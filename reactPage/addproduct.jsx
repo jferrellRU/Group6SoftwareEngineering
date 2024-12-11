@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const App = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +9,7 @@ const App = () => {
     });
     const [imageFile, setImageFile] = useState(null);
     const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -20,41 +20,89 @@ const App = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        const base64 = await convertToBase64(file);
-        setImageFile(base64);
+        try {
+            const base64 = await convertToBase64(file);
+            setImageFile(base64);
+        } catch (error) {
+            setMessage('Error processing image. Please try again.');
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        if (!imageFile) {
-            setMessage("Please upload an image before submitting!");
-            return;
-        }
+        setIsLoading(true);
     
         try {
-            // Upload the image
-            const imageResponse = await axios.post('/images', {
-                image: imageFile
-            });
-
-            if (!imageResponse.data.image) {
-                throw new Error('No image data received from server');
-            }
-
-            // Create the product data object with the correct field names
-            const productData = {
+            // Debug log to see form data
+            console.log('Form Data:', {
                 name: formData.productName,
                 description: formData.productDescription,
-                price: parseFloat(formData.productPrice),
+                price: formData.productPrice,
+                stockQuantity: formData.stockQuantity
+            });
+    
+            // Validate form data first
+            if (!formData.productName || !formData.productDescription || !formData.productPrice) {
+                throw new Error('Please fill in all required fields');
+            }
+    
+            // Upload image first if exists
+            let imageId = null;
+            if (imageFile) {
+                console.log("Uploading image...");
+                const imageResponse = await fetch('/api/images', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: imageFile
+                    })
+                });
+    
+                if (!imageResponse.ok) {
+                    const errorData = await imageResponse.json();
+                    throw new Error(`Image upload failed: ${errorData.message}`);
+                }
+    
+                const imageData = await imageResponse.json();
+                console.log('Image Response:', imageData); // Debug log
+    
+                if (!imageData.image) {
+                    throw new Error('No image data received from server');
+                }
+                imageId = imageData.image._id;
+            }
+    
+            // Create the product data object
+            const productData = {
+                name: formData.productName.trim(),
+                description: formData.productDescription.trim(),
+                price: Number(formData.productPrice),  // Explicit conversion
                 stockQuantity: parseInt(formData.stockQuantity) || 0,
-                image: imageResponse.data.image._id
+                ...(imageId && { image: imageId })
             };
-
-            console.log('Submitting product data:', productData);
-
-            const productResponse = await axios.post('/products', productData);
-            console.log('Server response:', productResponse.data);
+    
+            console.log('Product Data to be sent:', productData); // Debug log
+    
+            const productResponse = await fetch('/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData)
+            });
+    
+            console.log('Response status:', productResponse.status); // Debug log
+    
+            if (!productResponse.ok) {
+                const errorData = await productResponse.json();
+                console.log('Error response:', errorData); // Debug log
+                throw new Error(errorData.message || 'Failed to create product');
+            }
+    
+            const result = await productResponse.json();
+            console.log('Server response:', result);
     
             setMessage('Product added successfully!');
             
@@ -72,9 +120,10 @@ const App = () => {
             if (fileInput) fileInput.value = '';
             
         } catch (error) {
-            console.error('Error submitting data:', error);
-            const errorMessage = error.response?.data?.message || error.message;
-            setMessage(`Failed to add product: ${errorMessage}`);
+            console.error('Detailed error:', error);
+            setMessage(`Failed to add product: ${error.message}`);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -148,8 +197,7 @@ const App = () => {
                         type="file"
                         id="productImageFile"
                         accept="image/*"
-                        onChange={handleFileChange}
-                        required
+                        onChange={handleFileChange}  
                         className="form-control"
                     />
                 </div>
@@ -162,8 +210,12 @@ const App = () => {
                     />
                 )}
                 
-                <button type="submit" className="submit-button">
-                    Add Product
+                <button 
+                    type="submit" 
+                    className="submit-button"
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Adding Product...' : 'Add Product'}
                 </button>
             </form>
         </div>

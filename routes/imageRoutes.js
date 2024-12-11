@@ -18,6 +18,9 @@ router.get('/:id', async (req, res) => {
 
 // POST: Upload an image
 router.post("/", async (req, res) => {
+    if (!req.body) {
+        return res.status(400).json({ message: "Request body is undefined" });
+    }
     const { image, product } = req.body; // Update 'myFile' to 'image'
     if (!image) {
         return res.status(400).json({ message: "No file provided" });
