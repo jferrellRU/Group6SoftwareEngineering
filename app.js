@@ -49,7 +49,10 @@ app.use('/addproduct', express.static(path.join(__dirname, 'public/react')));
 app.get('/addproduct', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/react/index.html'));
 });
-
+//Serve delete/edit Product page
+app.get('/editProduct', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'editProduct.html'));
+});
 // Handle 404 for unknown routes
 app.use((req, res) => {
     res.status(404).json({ error: 'Route not found' });
