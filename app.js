@@ -19,28 +19,20 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const imageRoutes = require('./routes/imageRoutes');
+const cartRoutes = require('./routes/cart'); // Import the cart routes
 
 // API routes
 app.use('/users', userRoutes);
 app.use('/orders', orderRoutes);
 app.use('/api/products', productRoutes);
 app.use('/reviews', reviewRoutes);
-app.use('/api/images', imageRoutes);
+app.use('/images', imageRoutes);
+app.use('/cart', cartRoutes); // Add this route for cart functionality
 
-// debug API 
-app.use('/api/products', (req, res, next) => {
-    console.log('Incoming product data:', req.body);
-    next();
-});
-
-
-// Serve static files 
-
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/style', express.static(path.join(__dirname, 'style')));
 app.use('/jpgs', express.static(path.join(__dirname, 'jpgs')));
-app.use('/reactPage', express.static(path.join(__dirname, 'reactPage')));
-
 
 // Serve index.html for root path
 app.get('/', (req, res) => {
@@ -57,7 +49,6 @@ app.use('/addproduct', express.static(path.join(__dirname, 'public/react')));
 app.get('/addproduct', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/react/index.html'));
 });
-
 
 // Handle 404 for unknown routes
 app.use((req, res) => {

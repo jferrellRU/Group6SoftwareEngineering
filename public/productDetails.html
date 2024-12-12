@@ -24,6 +24,13 @@
         <div id="product-container">
             <!-- Product details will be injected here -->
         </div>
+
+        <!-- Amount input and "Add to Cart" button -->
+        <div id="cart-section">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" min="1" value="1">
+            <button id="add-to-cart-btn">Add to Cart</button>
+        </div>
     </section>
 
     <!-- Footer Section -->
@@ -36,9 +43,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
 
+        let productData;
+
         fetch(`/products/${productId}`)
             .then(response => response.json())
             .then(product => {
+                productData = product;
                 const productContainer = document.getElementById('product-container');
                 productContainer.innerHTML = `
                     <h3>${product.name}</h3>
@@ -52,6 +62,41 @@
                 console.error('Error fetching product:', error);
                 document.getElementById('product-container').innerHTML = '<p>Product not found.</p>';
             });
+
+        // Handle "Add to Cart" button click
+        document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+            const amount = parseInt(document.getElementById('amount').value);
+            if (amount > 0 && amount <= productData.stockQuantity) {
+                const userId = "6758c742cda8e306e3548cb1"; // Test user ID (replace with dynamic user ID later)
+
+                // Make the request to add the product to the user's cart
+                fetch('/add-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId, // Send the test user ID
+                        productId: productData._id,
+                        quantity: amount
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Product added to cart successfully!');
+                    } else {
+                        alert('Error adding to cart.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred.');
+                });
+            } else {
+                alert('Invalid quantity. Please select a valid amount.');
+            }
+        });
     </script>
 
 </body>
