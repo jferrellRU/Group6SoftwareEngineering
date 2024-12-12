@@ -14,7 +14,6 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // API Routes
-const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
@@ -23,7 +22,6 @@ const imageRoutes = require('./routes/imageRoutes');
 // Mount API routes
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/images', imageRoutes);
 

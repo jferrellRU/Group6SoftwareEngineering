@@ -9,9 +9,19 @@ const productSchema = new mongoose.Schema({
     description: { type: String, required: false },
     price: { type: Number, required: false },
     stockQuantity: { type: Number, required: false },
+    inCart: { type: Boolean, default: false },
+    orders: { type: Boolean, default: false },
+    // false ON "ORDER"
+    quantity: { type: Number, required: false },
+    status: { type: String, enum: ['pending', 'completed', 'canceled'], default: 'pending' },
+    total_price: { type: Number, required: false },
+
 }, { timestamps: true });
 
 // Create the Product model
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
+
+// product is also cart
+
