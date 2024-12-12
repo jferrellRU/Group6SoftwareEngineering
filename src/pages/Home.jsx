@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import '../styles/Home.css';
+import { Link } from "react-router-dom";
+import "../styles/Home.css";
 import Header from "../components/Header";
 
 const Home = () => {
@@ -17,7 +18,6 @@ const Home = () => {
     <div>
       {/* Header Section */}
       <header>
-        {/* Simulate dynamic header injection by rendering a Header component */}
         <Header />
       </header>
 
@@ -28,10 +28,11 @@ const Home = () => {
           {products.length > 0 ? (
             products.map((product) => (
               <div key={product._id} className="product">
-                <a href={`/productDetails/${product._id}`}>
-                </a>
-                <h3>{product.name}</h3>
-                <p>${product.price}</p>
+                {/* Use Link for SPA navigation */}
+                <Link to={`/product-details/${product._id}`}>
+                  <h3>{product.name}</h3>
+                  <p>${product.price}</p>
+                </Link>
               </div>
             ))
           ) : (
@@ -47,6 +48,5 @@ const Home = () => {
     </div>
   );
 };
-
 
 export default Home;
