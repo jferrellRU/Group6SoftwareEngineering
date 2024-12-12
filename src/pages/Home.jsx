@@ -1,3 +1,5 @@
+// Home.jsx
+
 import React, { useEffect, useState } from "react";
 import '../styles/Home.css';
 import Header from "../components/Header";
@@ -28,10 +30,11 @@ const Home = () => {
           {products.length > 0 ? (
             products.map((product) => (
               <div key={product._id} className="product">
-                <a href={`/productDetails/${product._id}`}>
+                {/* Link to the Product Details page using product._id */}
+                <a href={`/product-details/${product._id}`}>
+                  <h3>{product.name}</h3>
+                  <p>${product.price}</p>
                 </a>
-                <h3>{product.name}</h3>
-                <p>${product.price}</p>
               </div>
             ))
           ) : (
@@ -47,6 +50,5 @@ const Home = () => {
     </div>
   );
 };
-
 
 export default Home;
