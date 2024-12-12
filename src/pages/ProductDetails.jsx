@@ -1,60 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const ProductDetails = () => {
-    const [productData, setProductData] = useState(null);
-    const [amount, setAmount] = useState(1);
+  const { id } = useParams(); // Extract the product ID from the URL
+  const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Fetch header
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-container').innerHTML = data;
-            });
+  useEffect(() => {
+    // Fetch product details by ID
+    fetch(`/products/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details");
+        }
+        return response.json();
+      })
+      .then((data) => setProduct(data))
+      .catch((err) => {
+        console.error("Error fetching product:", err);
+        setError("Product not found.");
+      });
+  }, [id]);
 
-        // Fetch product details by ID (using URL params)
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
-
-        fetch(`/products/${productId}`)
-            .then(response => response.json())
-            .then(product => {
-                setProductData(product);
-            })
-            .catch(error => {
-                console.error('Error fetching product:', error);
-                document.getElementById('product-container').innerHTML = '<p>Product not found.</p>';
-            });
-    }, []);
-
-
-    return (
-        <div>
-            <div id="header-container"></div>
-
-            <section id="product-details">
-                <h2>Product Details</h2>
-                <div id="product-container">
-                    {productData ? (
-                        <>
-                            <h3>{productData.name}</h3>
-                            <img src={productData.imageURL} style={{ width: '400px', height: 'auto' }} alt={productData.name} />
-                            <p>{productData.description}</p>
-                            <p>Price: ${productData.price}</p>
-                            <p>Available stock: {productData.stockQuantity}</p>
-                        </>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                </div>
-
-            </section>
-
-            <footer>
-                <p>&copy; 2024 Online Retail Store. All rights reserved.</p>
-            </footer>
-        </div>
-    );
+  return (
+    <div>
+      {error ? (
+        <p>{error}</p>
+      ) : product ? (
+        <>
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
+          <p>Price: ${product.price}</p>
+        </>
+      ) : (
+        <p>Loading product details...</p>
+      )}
+    </div>
+  );
 };
 
 export default ProductDetails;
