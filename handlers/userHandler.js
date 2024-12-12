@@ -1,4 +1,5 @@
 const User = require('../models/userModel'); // Import the User model
+const jwt = require('jsonwebtoken');
 
 // Get all users
 const getUsers = async (req, res) => {
@@ -75,4 +76,23 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email, password });
+
+        if (!user) {
+            return res.status(400).send({ error: 'Invalid login credentials' });
+        }
+        const token = jwt.sign({ _id: user._id }, 'your_jwt_secret');
+        res.send({ user, token });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
+
+const me = async (req, res) => {
+    res.send(req.user);
+}
+
+module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser, login, me };

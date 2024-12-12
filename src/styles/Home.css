@@ -1,0 +1,204 @@
+/* General Body Styling */
+body {
+  font-family: 'Sprite Graffiti', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; /* White background */
+}
+
+/* Header Section Styling */
+header {
+  text-align: center;
+  padding: 20px 10px;
+  background-color: #ffffff; /* White background */
+}
+
+header .logo {
+  max-width: 80%; /* Responsive logo size */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+header .subtitle {
+  font-family: 'Sprite Graffiti', Arial, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  color: #0066ff;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Navigation Bar Styling */
+nav {
+  background-color: #0066ff; /* Dark blue background */
+  padding: 20px 0; /* Adjusted padding for smaller screens */
+  border-top: 5px solid #ffde59;
+  border-bottom: 5px solid #ffde59;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allow nav items to wrap on small screens */
+}
+
+nav ul li {
+  margin: 10px 20px; /* Reduced spacing for smaller screens */
+}
+
+nav ul li a {
+  font-family: 'Sprite Graffiti', Arial, sans-serif;
+  text-decoration: none;
+  font-size: 24px; /* Smaller text for navigation links */
+  font-weight: thin;
+  text-transform: uppercase;
+  color: #ffde59; /* Gold text */
+  transition: color 0.3s;
+}
+
+nav ul li a:hover {
+  color: white; /* White on hover */
+}
+
+nav ul li img {
+  width: 20px; /* Adjusted icon size for smaller screens */
+  height: 20px;
+}
+
+/* Product Grid Styling */
+#products {
+  text-align: center;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px; /* Prevent excessive stretching */
+  margin: 0 auto;
+}
+
+.product {
+  flex: 1 1 calc(25% - 20px); /* 4 items per row */
+  max-width: 200px; /* Prevent items from being too large */
+  min-width: 150px; /* Prevent items from shrinking too much */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.product img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.product p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Font Face Definitions */
+@font-face {
+  font-family: 'Sprite Graffiti';
+  src: url('./SpriteGraffiti.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Sprite Graffiti Shadow';
+  src: url('./SpriteGraffitiShadow.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Sprite Graffiti Extras';
+  src: url('./SpriteGraffitiExtras.otf') format('opentype');
+}
+
+/* Media Queries */
+
+/* For small screens (mobile) */
+@media only screen and (max-width: 600px) {
+  header .subtitle {
+      font-size: 20px; /* Smaller subtitle font size */
+  }
+
+  nav ul {
+      flex-direction: column; /* Stack nav items vertically */
+      padding: 10px 0;
+  }
+
+  nav ul li {
+      margin: 10px 0; /* Vertical spacing between nav items */
+  }
+
+  nav ul li a {
+      font-size: 18px; /* Smaller font size for mobile */
+  }
+
+  .product {
+      flex: 1 1 calc(50% - 10px); /* 2 items per row */
+  }
+
+  .product img {
+      width: 100%;
+      height: auto;
+  }
+}
+
+/* For medium screens (tablet) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  header .subtitle {
+      font-size: 22px;
+  }
+
+  nav ul li a {
+      font-size: 22px; /* Slightly smaller nav font for tablets */
+  }
+
+  nav ul li {
+      margin: 5px 15px; /* Adjust spacing for medium screens */
+  }
+
+  .product {
+      flex: 1 1 calc(33.33% - 20px); /* 3 items per row */
+  }
+}
+
+/* For large screens (desktop) */
+@media only screen and (min-width: 1025px) {
+  header .subtitle {
+      font-size: 30px; /* Larger font size for subtitles */
+  }
+
+  nav ul li a {
+      font-size: 30px; /* Larger nav font for desktops */
+  }
+
+  nav ul li {
+      margin: 0 80px; /* Restore original spacing */
+  }
+
+  .product {
+      flex: 1 1 calc(25% - 20px); /* 4 items per row */
+  }
+}

@@ -1,4 +1,4 @@
-# Project Title
+# Dizzy Designs
 
 A brief description of what this project does and who it's for.
 
@@ -15,6 +15,10 @@ A brief description of what this project does and who it's for.
 3. Install the dependencies:
     ```sh
     npm install
+    ```
+4. Build the app:
+    ```sh
+    npm run build
     ```
 
 ## Usage
@@ -36,8 +40,3 @@ npm start
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
-    echo >> /Users/samuelfahim/.zprofile
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/samuelfahim/.zprofile
-    eval "$(/opt/homebrew/bin/brew shellenv)"

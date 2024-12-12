@@ -1,0 +1,59 @@
+/* Header Styling */
+header {
+    text-align: center;
+    background-color: #ffffff; /* White background */
+    padding: 20px 10px;
+    border-bottom: 5px solid #ffde59; /* Gold border */
+  }
+  
+  /* Logo Styling */
+  header .logo img {
+    max-width: 200px; /* Adjust as per your logo size */
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  /* Subtitle Styling */
+  header .subtitle {
+    font-family: 'Sprite Graffiti', Arial, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #0066ff; /* Bright blue color */
+    margin: 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  /* Navigation Bar Styling */
+  nav {
+    background-color: #0066ff; /* Bright blue background */
+    padding: 10px 0;
+    border-top: 5px solid #ffde59; /* Gold border at top */
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  nav ul li {
+    margin: 0 20px; /* Spacing between nav items */
+  }
+  
+  nav ul li a {
+    font-family: 'Sprite Graffiti', Arial, sans-serif;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffde59; /* Gold color for text */
+    transition: color 0.3s ease;
+  }
+  
+  nav ul li a:hover {
+    color: white; /* White on hover */
+  }
