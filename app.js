@@ -25,15 +25,14 @@ app.use('/users', userRoutes);
 app.use('/products', productRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/images', imageRoutes);
-app.use('orders', orderRoutes);
+app.use('/orders', orderRoutes);
+
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Serve Static Assets
 app.use('/assets', express.static(path.join(__dirname, 'public'))); // Serve static assets like images, fonts, etc.
 app.use('/styles', express.static(path.join(__dirname, 'style'))); // Serve styles
 app.use('/images', express.static(path.join(__dirname, 'jpgs'))); // Serve images
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'build')));
 
 // Handle all other routes by serving React's index.html
 app.get('*', (req, res) => {
