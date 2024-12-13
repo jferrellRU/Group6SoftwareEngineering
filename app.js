@@ -18,12 +18,14 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const imageRoutes = require('./routes/imageRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 // Mount API routes
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/images', imageRoutes);
+app.use('orders', orderRoutes);
 
 // Serve Static Assets
 app.use('/assets', express.static(path.join(__dirname, 'public'))); // Serve static assets like images, fonts, etc.
