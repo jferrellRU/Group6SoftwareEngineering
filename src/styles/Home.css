@@ -1,6 +1,6 @@
 /* General Body Styling */
 body {
-  font-family: 'Sprite Graffiti', Arial, sans-serif;
+  font-family: 'Sprite Graffiti', Arial, sans-serif; /* Sprite Graffiti font */
   margin: 0;
   padding: 0;
   background-color: #ffffff; /* White background */
@@ -30,55 +30,26 @@ header .subtitle {
   letter-spacing: 2px;
 }
 
-/* Navigation Bar Styling */
-nav {
-  background-color: #0066ff; /* Dark blue background */
-  padding: 20px 0; /* Adjusted padding for smaller screens */
-  border-top: 5px solid #ffde59;
-  border-bottom: 5px solid #ffde59;
+/* Featured Products Section */
+#products {
+  text-align: center; /* Center the title and content */
+  font-family: 'Sprite Graffiti', Arial, sans-serif; /* Use Sprite Graffiti for the section */
+  margin: 40px auto; /* Add space around the section */
 }
 
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* Allow nav items to wrap on small screens */
-}
-
-nav ul li {
-  margin: 10px 20px; /* Reduced spacing for smaller screens */
-}
-
-nav ul li a {
-  font-family: 'Sprite Graffiti', Arial, sans-serif;
-  text-decoration: none;
-  font-size: 24px; /* Smaller text for navigation links */
-  font-weight: thin;
+#products h2 {
+  font-size: 32px;
+  color: #0066ff; /* Bright blue for the section title */
+  margin-bottom: 20px;
   text-transform: uppercase;
-  color: #ffde59; /* Gold text */
-  transition: color 0.3s;
-}
-
-nav ul li a:hover {
-  color: white; /* White on hover */
-}
-
-nav ul li img {
-  width: 20px; /* Adjusted icon size for smaller screens */
-  height: 20px;
+  letter-spacing: 2px;
 }
 
 /* Product Grid Styling */
-#products {
-  text-align: center;
-}
-
 .product-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: center; /* Center the product cards */
   gap: 20px;
   max-width: 1200px; /* Prevent excessive stretching */
   margin: 0 auto;
@@ -86,18 +57,21 @@ nav ul li img {
 
 .product {
   flex: 1 1 calc(25% - 20px); /* 4 items per row */
-  max-width: 200px; /* Prevent items from being too large */
-  min-width: 150px; /* Prevent items from shrinking too much */
+  max-width: 280px; /* Prevent items from being too large */
+  min-width: 200px; /* Prevent items from shrinking too much */
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 10px;
   text-align: center;
   box-sizing: border-box;
+  background: #fff; /* White background for better readability */
+  overflow: hidden; /* Ensure content does not overflow */
+  position: relative;
 }
 
 .product img {
-  width: 200px;
-  height: 200px;
+  width: 100%; /* Ensure image fits within the card */
+  height: 180px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -105,17 +79,27 @@ nav ul li img {
 .product h3 {
   font-size: 1.2rem;
   color: #333;
+  margin: 10px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevent text from overflowing */
 }
 
 .product p {
   font-size: 1rem;
   color: #666;
+  margin: 5px 0;
 }
 
 /* Footer Styling */
 footer {
   text-align: center;
   margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #666;
 }
 
 /* Font Face Definitions */
@@ -138,67 +122,41 @@ footer {
 
 /* For small screens (mobile) */
 @media only screen and (max-width: 600px) {
-  header .subtitle {
-      font-size: 20px; /* Smaller subtitle font size */
-  }
-
-  nav ul {
-      flex-direction: column; /* Stack nav items vertically */
-      padding: 10px 0;
-  }
-
-  nav ul li {
-      margin: 10px 0; /* Vertical spacing between nav items */
-  }
-
-  nav ul li a {
-      font-size: 18px; /* Smaller font size for mobile */
-  }
-
   .product {
-      flex: 1 1 calc(50% - 10px); /* 2 items per row */
+    flex: 1 1 calc(50% - 10px); /* 2 items per row */
   }
 
   .product img {
-      width: 100%;
-      height: auto;
+    height: 150px; /* Adjust image height for smaller screens */
   }
 }
 
 /* For medium screens (tablet) */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
-  header .subtitle {
-      font-size: 22px;
-  }
-
-  nav ul li a {
-      font-size: 22px; /* Slightly smaller nav font for tablets */
-  }
-
-  nav ul li {
-      margin: 5px 15px; /* Adjust spacing for medium screens */
+  #products h2 {
+    font-size: 28px; /* Slightly smaller title for tablets */
   }
 
   .product {
-      flex: 1 1 calc(33.33% - 20px); /* 3 items per row */
+    flex: 1 1 calc(33.33% - 20px); /* 3 items per row */
+  }
+
+  .product img {
+    height: 160px; /* Adjust image height for tablets */
   }
 }
 
 /* For large screens (desktop) */
 @media only screen and (min-width: 1025px) {
-  header .subtitle {
-      font-size: 30px; /* Larger font size for subtitles */
-  }
-
-  nav ul li a {
-      font-size: 30px; /* Larger nav font for desktops */
-  }
-
-  nav ul li {
-      margin: 0 80px; /* Restore original spacing */
+  #products h2 {
+    font-size: 36px; /* Larger title for desktops */
   }
 
   .product {
-      flex: 1 1 calc(25% - 20px); /* 4 items per row */
+    flex: 1 1 calc(25% - 20px); /* 4 items per row */
+  }
+
+  .product img {
+    height: 180px; /* Default height for images on larger screens */
   }
 }

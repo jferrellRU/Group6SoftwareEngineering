@@ -67,6 +67,9 @@ const addProductAsOrder = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const deleteOrder = (req, res) => {
+    handleResponse(res, Order.findByIdAndDelete(req.params.id));
+};
 
 
 
@@ -79,4 +82,5 @@ module.exports = {
     getTotalPrice,
     getOrderStatus,
     addProductAsOrder,
+    deleteOrder
 };

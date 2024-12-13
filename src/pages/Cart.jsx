@@ -1,21 +1,69 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Home.css";
+import "../styles/Home.css"; // Reuse the styles from Home
 import Header from "../components/Header";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch items in cart from the backend
   useEffect(() => {
-    fetch("/orders?status=in_cart")
-      .then((response) => response.json())
-      .then((data) => setCartItems(data))
-      .catch((error) => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch("/orders?status=in_cart");
+        if (!response.ok) {
+          console.error("Failed to fetch cart items:", response.statusText);
+          setError("Failed to load cart items. Please try again.");
+          return;
+        }
+
+        const cartData = await response.json();
+
+        // Fetch images for each product in the cart
+        const cartItemsWithImages = await Promise.all(
+          cartData.map(async (item) => {
+            if (item.productID) {
+              try {
+                // Fetch the product to get its imageID
+                const productResponse = await fetch(`/products/${item.productID}`);
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+                  if (productData.imageID) {
+                    console.log(`Fetching image for product ${item.productID}`);
+                    const imageResponse = await fetch(`/images/${productData.imageID}`);
+                    if (imageResponse.ok) {
+                      const imageData = await imageResponse.json();
+                      item.imageUrl = imageData.image; // Attach the image URL to the cart item
+                    } else {
+                      console.error(
+                        `Failed to fetch image for product ${item.productID}:`,
+                        imageResponse.statusText
+                      );
+                    }
+                  } else {
+                    console.warn(`No imageID for product ${item.productID}`);
+                  }
+                } else {
+                  console.error(
+                    `Failed to fetch product ${item.productID}:`,
+                    productResponse.statusText
+                  );
+                }
+              } catch (error) {
+                console.error(`Error fetching product or image for item ${item._id}:`, error);
+              }
+            }
+            return item;
+          })
+        );
+
+        setCartItems(cartItemsWithImages);
+      } catch (error) {
         console.error("Error fetching cart items:", error);
         setError("Failed to load cart items. Please try again.");
-      });
+      }
+    };
+
+    fetchCartItems();
   }, []);
 
   // Handle removing an item from the cart
@@ -46,7 +94,10 @@ const Cart = () => {
   };
 
   // Calculate the total price of the cart
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div>
@@ -64,8 +115,8 @@ const Cart = () => {
             cartItems.map((item) => (
               <div key={item._id} className="cart-item-card">
                 <img
-                  src={item.image}
-                  alt={item.productName}
+                  src={item.imageUrl || "https://via.placeholder.com/150"}
+                  alt={item.productName || "Product"}
                   className="cart-item-image"
                 />
                 <div className="cart-item-details">
@@ -99,7 +150,7 @@ const Cart = () => {
 
       {/* Footer Section */}
       <footer>
-        <p>&copy; 2024 Online Retail Store. All rights reserved.</p>
+        <p>&copy; 2024 Dizzy Designs. All rights reserved.</p>
       </footer>
     </div>
   );

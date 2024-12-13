@@ -58,7 +58,7 @@ const OrdersHistory = () => {
 
       {/* Footer Section */}
       <footer>
-        <p>&copy; 2024 Online Retail Store. All rights reserved.</p>
+        <p>&copy; 2024 Dizzy Designs. All rights reserved.</p>
       </footer>
     </div>
   );

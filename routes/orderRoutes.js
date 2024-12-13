@@ -10,5 +10,6 @@ router.get('/:id/quantity', orderHandler.getOrderQuantity);
 router.get('/:id/total-price', orderHandler.getTotalPrice);
 router.get('/:id/status', orderHandler.getOrderStatus);
 router.post('/add-product-to-cart', orderHandler.addProductAsOrder);
+router.delete('/:id/remove', orderHandler.deleteOrder);
 
 module.exports = router;
