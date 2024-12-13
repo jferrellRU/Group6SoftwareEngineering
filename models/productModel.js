@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema({
     quantity: { type: Number, required: false },
     status: { type: String, enum: ['pending', 'completed', 'canceled'], default: 'pending' },
     total_price: { type: Number, required: false },
+    imageID: {type: String, required: false},
 
 }, { timestamps: true });
 
