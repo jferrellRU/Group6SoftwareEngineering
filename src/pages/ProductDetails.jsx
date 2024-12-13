@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import AddReview from "./AddReview";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Extract the product ID from the URL
+  const userId = "64b6f73df1a2c5f8f87c9b4e"; // Replace with the logged-in user's ID from your auth system
   const [product, setProduct] = useState(null);
+  const [reviews, setReviews] = useState([]); // State for reviews
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -44,7 +47,23 @@ const ProductDetails = () => {
       }
     };
 
+    const fetchReviews = async () => {
+      try {
+        // Fetch reviews for the product
+        const reviewsResponse = await fetch(`/reviews/product/${id}`);
+        if (!reviewsResponse.ok) {
+          throw new Error("Failed to fetch reviews");
+        }
+        const reviewsData = await reviewsResponse.json();
+        setReviews(reviewsData);
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
+        setError("Unable to load reviews.");
+      }
+    };
+
     fetchProductDetails();
+    fetchReviews();
   }, [id]);
 
   return (
@@ -67,6 +86,23 @@ const ProductDetails = () => {
         </>
       ) : (
         <p>Loading product details...</p>
+      )}
+
+      {/* Add Review Component */}
+      <AddReview productId={id} userId={userId} />
+
+      {/* Display Reviews */}
+      <h2>Customer Reviews</h2>
+      {reviews.length > 0 ? (
+        reviews.map((review) => (
+          <div key={review._id} className="review">
+            <h3>{review.userId}</h3>
+            <p>Rating: {review.rating}/5</p>
+            <p>{review.comment}</p>
+          </div>
+        ))
+      ) : (
+        <p>No reviews yet. Be the first to review this product!</p>
       )}
     </div>
   );
