@@ -50,7 +50,7 @@ const ProductDetails = () => {
     const fetchReviews = async () => {
       try {
         // Fetch reviews for the product
-        const reviewsResponse = await fetch(`/reviews?productId=${id}`);
+        const reviewsResponse = await fetch(`/reviews/product/${id}`);
         if (!reviewsResponse.ok) {
           throw new Error("Failed to fetch reviews");
         }
