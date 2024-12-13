@@ -8,9 +8,12 @@ const OrdersHistory = () => {
 
   // Fetch completed orders from the backend
   useEffect(() => {
-    fetch("/orders?status=completed")
+    fetch("/orders")
       .then((response) => response.json())
-      .then((data) => setOrders(data))
+      .then((data) => {
+        console.log("Fetched orders:", data);
+        setOrders(data);
+      })
       .catch((error) => console.error("Error fetching orders:", error));
   }, []);
 
@@ -35,7 +38,7 @@ const OrdersHistory = () => {
                 />
                 <div className="order-details">
                   <h3>{order.productName}</h3>
-                  <p>Price: ${order.price}</p>
+                  <p>Price: ${order.total_price}</p>
                   <p>Quantity: {order.quantity}</p>
                   <p>Status: {order.status}</p>
                   <button

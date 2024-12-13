@@ -9,6 +9,7 @@ import EditProduct from './pages/EditProduct';
 import Search from './pages/Search';
 import OrdersHistory from './pages/OrdersHistory';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/orders-history" element={<OrdersHistory />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
 
       </Routes>
     </Router>
