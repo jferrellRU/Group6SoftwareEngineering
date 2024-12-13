@@ -35,8 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div 
-    className="login-container">
+    <div className="login-container">
       {/* Header Section */}
       <header>
         <Header />
