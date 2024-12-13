@@ -19,6 +19,7 @@ const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const paypalRoutes = require('./routes/paypalRoutes');
 
 // Mount API routes
 app.use('/users', userRoutes);
@@ -26,6 +27,7 @@ app.use('/products', productRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/images', imageRoutes);
 app.use('/orders', orderRoutes);
+app.use('/paypal', paypalRoutes);
 
 app.use(express.static(path.join(__dirname, 'build')));
 
