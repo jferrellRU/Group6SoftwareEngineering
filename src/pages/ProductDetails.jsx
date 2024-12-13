@@ -47,6 +47,36 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
+  // Function to handle "Add to Cart" action
+  const handleAddToCart = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/orders/add-product-to-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_name: "Anonymous", // Replace with actual user data if available
+          productID: product._id,
+          productName: product.name,
+          quantity: 1, // Default quantity or user-selected quantity
+          total_price: product.price * quantity, // Assuming quantity = 1
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add product to cart");
+      }
+
+      const newOrder = await response.json();
+      console.log("Product added to cart:", newOrder);
+      alert(`${product.name} has been added to your cart.`);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+      alert("Failed to add product to cart. Please try again.");
+    }
+  };
+
   return (
     <div>
       {error ? (
@@ -64,6 +94,9 @@ const ProductDetails = () => {
           <p>{product.description}</p>
           <p>Price: ${product.price}</p>
           <p>Stock: {product.stockQuantity}</p>
+          <button onClick={handleAddToCart} className="add-to-cart-button">
+          Add to Cart
+        </button>
         </>
       ) : (
         <p>Loading product details...</p>
