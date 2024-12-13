@@ -48,6 +48,28 @@ const getOrderStatus = (req, res) => {
     handleResponse(res, Order.findById(req.params.id).select('status'));
 };
 
+const addProductAsOrder = async (req, res) => {
+    const { user_name, productID, productName, quantity, total_price } = req.body;
+
+    try {
+        const newOrder = new Order({
+            user_name,
+            productID,
+            productName,
+            quantity,
+            total_price,
+            status: 'in_cart',
+        });
+
+        const savedOrder = await newOrder.save();
+        res.status(201).json(savedOrder);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
 module.exports = {
     getAllOrders,
     getCanceledOrders,
@@ -56,4 +78,5 @@ module.exports = {
     getOrderQuantity,
     getTotalPrice,
     getOrderStatus,
+    addProductAsOrder,
 };

@@ -13,19 +13,29 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
+
 // API Routes
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const paypalRoutes = require('./routes/paypalRoutes');
+
+const cookieParser = require('cookie-parser');
+
+//enable cookie parsing for login
+app.use(cookieParser());
 
 // Mount API routes
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/images', imageRoutes);
-app.use('orders', orderRoutes);
+app.use('/orders', orderRoutes);
+app.use('/paypal', paypalRoutes);
+
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Serve Static Assets
 app.use('/assets', express.static(path.join(__dirname, 'public'))); // Serve static assets like images, fonts, etc.
