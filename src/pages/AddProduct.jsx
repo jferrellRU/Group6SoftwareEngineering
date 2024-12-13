@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import addproduct from '../styles/addproduct.css';
+import '../styles/addproduct.css';
 
 const App = () => {
     const [formData, setFormData] = useState({
@@ -34,7 +34,6 @@ const App = () => {
         setIsLoading(true);
     
         try {
-            // Debug log to see form data
             console.log('Form Data:', {
                 name: formData.productName,
                 description: formData.productDescription,
@@ -42,12 +41,12 @@ const App = () => {
                 stockQuantity: formData.stockQuantity
             });
     
-            // Validate form data first
+            // Validate form data
             if (!formData.productName || !formData.productDescription || !formData.productPrice) {
                 throw new Error('Please fill in all required fields');
             }
     
-            // Upload image first if exists
+            // Upload image if it exists
             let imageId = null;
             if (imageFile) {
                 console.log("Uploading image...");
@@ -67,25 +66,27 @@ const App = () => {
                 }
     
                 const imageData = await imageResponse.json();
-                console.log('Image Response:', imageData); // Debug log
+                console.log('Image Response:', imageData);
     
-                if (!imageData.image) {
-                    throw new Error('No image data received from server');
+                if (!imageData.image._id) {
+                    throw new Error('No image ID received from server');
                 }
-                imageId = imageData.image._id;
+    
+                imageId = imageData.image._id; // Save the image's ObjectId
             }
     
-            // Create the product data object
+            // Create the product data object with the imageId
             const productData = {
                 name: formData.productName.trim(),
                 description: formData.productDescription.trim(),
                 price: Number(formData.productPrice),  // Explicit conversion
                 stockQuantity: parseInt(formData.stockQuantity) || 0,
-                ...(imageId && { image: imageId })
+                ...(imageId && { imageID: imageId }) // Include imageID if it exists
             };
     
-            console.log('Product Data to be sent:', productData); // Debug log
+            console.log('Product Data to be sent:', productData);
     
+            // Send product data to the backend
             const productResponse = await fetch('/products', {
                 method: 'POST',
                 headers: {
@@ -94,11 +95,11 @@ const App = () => {
                 body: JSON.stringify(productData)
             });
     
-            console.log('Response status:', productResponse.status); // Debug log
+            console.log('Response status:', productResponse.status);
     
             if (!productResponse.ok) {
                 const errorData = await productResponse.json();
-                console.log('Error response:', errorData); // Debug log
+                console.log('Error response:', errorData);
                 throw new Error(errorData.message || 'Failed to create product');
             }
     
@@ -106,8 +107,8 @@ const App = () => {
             console.log('Server response:', result);
     
             setMessage('Product added successfully!');
-            
-            // Clear form
+    
+            // Clear the form
             setFormData({
                 productName: '',
                 productDescription: '',
@@ -115,11 +116,10 @@ const App = () => {
                 stockQuantity: ''
             });
             setImageFile(null);
-            
+    
             // Reset file input
             const fileInput = document.getElementById('productImageFile');
             if (fileInput) fileInput.value = '';
-            
         } catch (error) {
             console.error('Detailed error:', error);
             setMessage(`Failed to add product: ${error.message}`);

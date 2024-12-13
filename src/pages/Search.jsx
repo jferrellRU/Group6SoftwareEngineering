@@ -22,8 +22,43 @@ const SearchProducts = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
-      setProducts(data);
+      const productsData = await response.json();
+
+      // Filter products with valid _id
+      const validProducts = productsData.filter((product) => product._id);
+      const invalidProducts = productsData.filter((product) => !product._id);
+
+      if (invalidProducts.length > 0) {
+        console.warn("Invalid products without _id:", invalidProducts);
+      }
+
+      // Fetch associated images for valid products
+      const productsWithImages = await Promise.all(
+        validProducts.map(async (product) => {
+          if (product.imageID) {
+            try {
+              const imageResponse = await fetch(`/images/${product.imageID}`);
+              if (imageResponse.ok) {
+                const imageData = await imageResponse.json();
+                product.imageUrl = imageData.image; // Add the image URL to the product object
+              } else {
+                console.error(
+                  `Failed to fetch image for product ${product._id}:`,
+                  imageResponse.statusText
+                );
+              }
+            } catch (error) {
+              console.error(
+                `Error fetching image for product ${product._id}:`,
+                error
+              );
+            }
+          }
+          return product;
+        })
+      );
+
+      setProducts(productsWithImages);
     } catch (error) {
       console.error("Error fetching products:", error);
       setError("Error fetching products. Please try again.");
@@ -69,14 +104,23 @@ const SearchProducts = () => {
           <p className="error">{error}</p>
         ) : products.length > 0 ? (
           <div className="product-grid">
-            {products.map((product) => (
-              <div key={product._id} className="product">
-                <Link to={`/product-details/${product._id}`}>
-                  <h3>{product.name}</h3>
-                  <p>${product.price}</p>
-                </Link>
-              </div>
-            ))}
+            {products.map((product) =>
+              product._id ? (
+                <div key={product._id} className="product">
+                  <Link to={`/product-details/${product._id}`}>
+                    {product.imageUrl && (
+                      <img
+                        src={product.imageUrl} // Base64 string or full URL for the image
+                        alt={product.name}
+                        className="product-image"
+                      />
+                    )}
+                    <h3>{product.name}</h3>
+                    <p>${product.price}</p>
+                  </Link>
+                </div>
+              ) : null
+            )}
           </div>
         ) : searchQuery ? (
           <p>No products found for "{searchQuery}".</p>

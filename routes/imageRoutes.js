@@ -1,17 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const Image = require("../models/imageModel"); // Import your Image model
+const mongoose = require("mongoose");
 
 // GET: Retrieve an image by ID
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ error: "Invalid image ID" });
+        }
+
         const image = await Image.findById(req.params.id);
         if (!image) {
-            return res.status(404).send("Image not found");
+            return res.status(404).json({ error: "Image not found" });
         }
-        res.set("Content-Type", "image/jpeg"); // Set the appropriate content type
-        res.send(image.file); // Send the image file
+
+        // Return the image in JSON format (Base64 string)
+        res.json({ image: image.file }); // Assuming the 'file' field contains the Base64 string
     } catch (err) {
+        console.error("Error retrieving image:", err);
         res.status(500).json({ error: "Error retrieving image: " + err.message });
     }
 });
