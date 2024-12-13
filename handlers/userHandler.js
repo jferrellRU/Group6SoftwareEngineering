@@ -215,6 +215,7 @@ const checkAuth = async (req, res) => {
         if (!user) {
             return res.status(400).json({success: false, message: "User not Found"});
         }     
+        console.log(user.userID);
         res.status(200).json({success: true, user: {...user._doc, password: undefined}})
     } catch(error) {
         console.log('Error checking authentification', error);

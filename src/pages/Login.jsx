@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import Header from "../components/Header";
 import '../styles/login.css';
 
 const Login = () => {
@@ -35,6 +36,9 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <header>
+        <Header />
+      </header>
       <h2>Login</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
