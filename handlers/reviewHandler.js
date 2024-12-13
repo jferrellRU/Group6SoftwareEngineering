@@ -3,12 +3,18 @@ const Review = require('../models/reviewModel'); // Import the Review model
 // Get all reviews
 const getAllReviews = async (req, res) => {
     try {
-        const reviews = await Review.find(); // Fetch all reviews
+        const { productId } = req.query; // Extract productId from query parameters
+
+        // Check if productId is provided
+        const filter = productId ? { productId } : {}; // Filter by productId if it exists
+        const reviews = await Review.find(filter); // Fetch reviews based on the filter
+
         res.status(200).json(reviews);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
+
 
 // Get reviews for a specific product
 const getReviewsByProductId = async (req, res) => {
