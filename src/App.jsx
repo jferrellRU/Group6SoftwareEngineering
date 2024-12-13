@@ -12,6 +12,8 @@ import Cart from './pages/Cart';
 import Signup from './pages/signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import AddReview from './pages/AddReview'
+import Checkout from './pages/Checkout';
 
 const App = () => {
   return (
@@ -23,6 +25,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/add-review" element={<AddReview />} />
         <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/product-details" element={<ProductDetails />} />"
         <Route path="/edit-product" element={<EditProduct />} />
@@ -32,6 +35,8 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/checkout" element={<Checkout />} />
+
       </Routes>
     </Router>
   );

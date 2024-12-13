@@ -5,9 +5,9 @@
   "type": "commonjs",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "react-scripts start",
+    "start": "react-scripts build && node app.js",
     "build": "react-scripts build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "react-scripts test",
     "db:setup": "node db/setup.js"
   },
   "keywords": [],
@@ -35,7 +35,6 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
     "babel-loader": "^9.2.1",
-    "concurrently": "^9.1.0",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.3",
     "jasmine": "^5.5.0",

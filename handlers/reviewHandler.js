@@ -10,6 +10,7 @@ const getAllReviews = async (req, res) => {
     }
 };
 
+
 // Get reviews for a specific product
 const getReviewsByProductId = async (req, res) => {
     try {
