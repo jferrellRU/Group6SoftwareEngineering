@@ -1,21 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Home.css";
+import "../styles/Home.css"; // Reuse the styles from Home
 import Header from "../components/Header";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch items in cart from the backend
   useEffect(() => {
-    fetch("/orders?status=in_cart")
-      .then((response) => response.json())
-      .then((data) => setCartItems(data))
-      .catch((error) => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch("/orders?status=in_cart");
+        if (!response.ok) {
+          console.error("Failed to fetch cart items:", response.statusText);
+          setError("Failed to load cart items. Please try again.");
+          return;
+        }
+
+        const cartData = await response.json();
+
+        // Fetch images for cart items
+        const cartItemsWithImages = await Promise.all(
+          cartData.map(async (item) => {
+            if (item.imageID) {
+              try {
+                console.log(`Fetching image for item ${item._id} with imageID: ${item.imageID}`);
+                const imageResponse = await fetch(`/images/${item.imageID}`);
+                if (imageResponse.ok) {
+                  const imageData = await imageResponse.json();
+                  console.log(`Image fetched for item ${item._id}:`, imageData);
+                  item.imageUrl = imageData.image; // Add the image URL to the cart item
+                } else {
+                  console.error(
+                    `Failed to fetch image for cart item ${item._id}:`,
+                    imageResponse.statusText
+                  );
+                }
+              } catch (error) {
+                console.error(
+                  `Error fetching image for cart item ${item._id}:`,
+                  error
+                );
+              }
+            } else {
+              console.warn(`No imageID for cart item ${item._id}`);
+            }
+            return item;
+          })
+        );
+
+        setCartItems(cartItemsWithImages);
+      } catch (error) {
         console.error("Error fetching cart items:", error);
         setError("Failed to load cart items. Please try again.");
-      });
+      }
+    };
+
+    fetchCartItems();
   }, []);
 
   // Handle removing an item from the cart
@@ -46,7 +86,10 @@ const Cart = () => {
   };
 
   // Calculate the total price of the cart
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div>
@@ -64,8 +107,8 @@ const Cart = () => {
             cartItems.map((item) => (
               <div key={item._id} className="cart-item-card">
                 <img
-                  src={item.image}
-                  alt={item.productName}
+                  src={item.imageUrl || "https://via.placeholder.com/150"}
+                  alt={item.productName || "Product"}
                   className="cart-item-image"
                 />
                 <div className="cart-item-details">
