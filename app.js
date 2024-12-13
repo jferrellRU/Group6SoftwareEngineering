@@ -19,11 +19,12 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const imageRoutes = require('./routes/imageRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+
 const cookieParser = require('cookie-parser');
 
 //enable cookie parsing for login
 app.use(cookieParser());
-const orderRoutes = require('./routes/orderRoutes');
 
 // Mount API routes
 app.use('/users', userRoutes);
