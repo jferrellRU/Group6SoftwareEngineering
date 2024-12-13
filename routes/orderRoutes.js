@@ -9,5 +9,6 @@ router.get('/:id/user', orderHandler.getUserName);
 router.get('/:id/quantity', orderHandler.getOrderQuantity);
 router.get('/:id/total-price', orderHandler.getTotalPrice);
 router.get('/:id/status', orderHandler.getOrderStatus);
+router.post('/add-product-to-cart', orderHandler.addProductAsOrder);
 
 module.exports = router;
