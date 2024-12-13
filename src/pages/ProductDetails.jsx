@@ -60,7 +60,7 @@ const ProductDetails = () => {
           productID: product._id,
           productName: product.name,
           quantity: 1, // Default quantity or user-selected quantity
-          total_price: product.price * quantity, // Assuming quantity = 1
+          total_price: product.price * 1, // Assuming quantity = 1
         }),
       });
 
