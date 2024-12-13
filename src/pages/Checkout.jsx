@@ -4,22 +4,48 @@ import axios from 'axios';
 
 const Checkout = () => {
   const [orders, setOrders] = useState([]);
-  const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [alerts, setAlerts] = useState("");
 
   useEffect(() => {
-    // Fetch orders and products on component mount
-    axios.get('/orders')
-      .then(response => {
-        setOrders(response.data);
-        calculateTotal(response.data);
-      })
-      .catch(error => console.error('Error fetching orders:', error));
+    // Fetch orders and their associated product images
+    const fetchOrdersWithImages = async () => {
+      try {
+        const response = await axios.get('/orders');
+        const ordersData = response.data;
 
-    axios.get('/products')
-      .then(response => setProducts(response.data))
-      .catch(error => console.error('Error fetching products:', error));
+        // Fetch product details and images for each order
+        const ordersWithImages = await Promise.all(
+          ordersData.map(async (order) => {
+            if (order.productID) {
+              try {
+                // Fetch the product to get its imageID
+                const productResponse = await axios.get(`/products/${order.productID}`);
+                const productData = productResponse.data;
+
+                if (productData.imageID) {
+                  console.log(`Fetching image for product ${order.productID}`);
+                  const imageResponse = await axios.get(`/images/${productData.imageID}`);
+                  order.imageUrl = imageResponse.data.image; // Attach the image URL to the order
+                } else {
+                  console.warn(`No imageID for product ${order.productID}`);
+                }
+              } catch (error) {
+                console.error(`Error fetching product or image for order ${order._id}:`, error);
+              }
+            }
+            return order;
+          })
+        );
+
+        setOrders(ordersWithImages);
+        calculateTotal(ordersWithImages);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    fetchOrdersWithImages();
 
     // Fetch PayPal configuration and load SDK
     axios.get('/paypal/config')
@@ -89,18 +115,18 @@ const Checkout = () => {
             });
         },
         onApprove: (data) => {
-            return axios.post('/paypal/complete_order', { order_id: data.orderID })
-              .then(response => {
-                console.log('Order Details:', response.data); // Log response for debugging
-                const orderDetails = response.data;
-                const intentObject = intent === 'authorize' ? 'authorizations' : 'captures';
-                setAlerts(`Thank you ${orderDetails.payer.name.given_name} ${orderDetails.payer.name.surname} for your payment of ${orderDetails.purchase_units[0].payments[intentObject][0].amount.value} ${orderDetails.purchase_units[0].payments[intentObject][0].amount.currency_code}!`);
-              })
-              .catch(error => {
-                console.error('Error completing order:', error.response || error);
-                setAlerts("An error occurred during payment.");
-              });
-          },
+          return axios.post('/paypal/complete_order', { order_id: data.orderID })
+            .then(response => {
+              console.log('Order Details:', response.data); // Log response for debugging
+              const orderDetails = response.data;
+              const intentObject = intent === 'authorize' ? 'authorizations' : 'captures';
+              setAlerts(`Thank you ${orderDetails.payer.name.given_name} ${orderDetails.payer.name.surname} for your payment of ${orderDetails.purchase_units[0].payments[intentObject][0].amount.value} ${orderDetails.purchase_units[0].payments[intentObject][0].amount.currency_code}!`);
+            })
+            .catch(error => {
+              console.error('Error completing order:', error.response || error);
+              setAlerts("An error occurred during payment.");
+            });
+        },
         onCancel: () => {
           setAlerts("Order cancelled!");
         },
@@ -134,6 +160,13 @@ const Checkout = () => {
         <h2>Your Orders</h2>
         {orders.filter(order => order.status === 'in_cart').map((order, index) => (
           <div className="order-item" key={index}>
+            {order.imageUrl && (
+              <img
+                src={order.imageUrl}
+                alt={`Order ${order._id}`}
+                className="order-item-image"
+              />
+            )}
             <h4>Order #{order._id}</h4>
             <p>Quantity: {order.quantity}</p>
             <p>Total Price: ${order.total_price}</p>
