@@ -4,10 +4,15 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    address: { type: String, required: true },
+    password: { type: String, required:  true},
+    isVerified: { type: Boolean, default: false },
     isSeller: { type: Boolean, default: false },
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
+    address: { type: String, required: false },
+    resetPasswordToken:String,
+    resetPasswordExpiresAt: Date,
+    verificationToken:String,
+    verificationTokenExpiresAt: Date
+});
 
 // Create the User model
 const User = mongoose.model('User', userSchema);
