@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../styles/login.css';
+import Header from "../components/Header";
 
 const Login = () => {
   const [formData, setFormData] = useState({
