@@ -1,11 +1,13 @@
 const {resend} = require('../resend/config.js')
 const {VerificationTokenEmailTemplate} = require('../resend/email-template.js')
+require('dotenv').config();
+const EMAIL = process.env.EMAIL;
 
 const sendVerificationEmail = async (email, verificationToken) => {
     try {
         const { data, error } = await resend.emails.send({
             from: "Acme <onboarding@resend.dev>",
-            to: ["evanpragone@gmail.com"],
+            to: [EMAIL],
             subject: "Verify Email",
             html: VerificationTokenEmailTemplate.replace("{verificationToken}",verificationToken),
           });
@@ -19,7 +21,7 @@ const sendWelcomeEmail = async (email,name) => {
     try {
         const { data, error } = await resend.emails.send({
             from: "Acme <onboarding@resend.dev>",
-            to: ["evanpragone@gmail.com"],
+            to: [EMAIL],
             subject: "Welcome to Dizzy Designs",
             html:`Hi ${name},<br>Account Verification Successful! Welcome to Dizzy Designs the retail website of the future.`.replace("${name}",name),
           });
@@ -34,7 +36,7 @@ const sendPasswordResetEmail = async(email, resetURL) => {
     try {
         const { data, error } = await resend.emails.send({
             from: "Acme <onboarding@resend.dev>",
-            to: ["evanpragone@gmail.com"],
+            to: [EMAIL],
             subject: "Reset Your Password",
             html: `Click <a href = "${url}">here</a> to reset your password`,
           });
@@ -49,7 +51,7 @@ const sendResetSuccessfulEmail = async(email) => {
     try {
         const { data, error } = await resend.emails.send({
             from: "Acme <onboarding@resend.dev>",
-            to: ["evanpragone@gmail.com"],
+            to: [EMAIL],
             subject: "Reset Password Successful",
             html: `Password was reset successfully.`,
           });

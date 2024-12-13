@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddReview from "./AddReview";
+import Header from "../components/Header";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Extract the product ID from the URL
@@ -98,6 +99,10 @@ const ProductDetails = () => {
 
   return (
     <div>
+      {/* Header Section */}
+      <header>
+        <Header />
+      </header>
       {error ? (
         <p>{error}</p>
       ) : product ? (
