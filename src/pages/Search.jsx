@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 const SearchProducts = () => {
   const [products, setProducts] = useState([]);
@@ -80,6 +81,10 @@ const SearchProducts = () => {
 
   return (
     <div>
+      {/* Header Section */}
+      <header>
+        <Header />
+      </header>
       <header>
         <div id="header-container">
           <h1>Product Search</h1>
