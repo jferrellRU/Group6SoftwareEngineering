@@ -1,32 +1,73 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../AuthContext';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import '../styles/login.css';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const { setUser } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-    };
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <button type="submit">Login</button>
-        </form>
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log(formData);
+      const response = await axios.post('/users/login', formData);
+      if (response.status === 200) {
+        alert('Login successful!');
+        localStorage.setItem('token', response.data.token);
+        navigate('/'); // Redirect to homepage
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid credentials');
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <h2>Login</h2>
+      {error && <div className="error">{error}</div>}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <div className="switch-link">
+        <p>Don't have an account? <Link to="/Signup">Sign Up</Link></p>
+        <p><Link to="/forgot-password" className="forgot-password-link">Forgot Password?</Link></p>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

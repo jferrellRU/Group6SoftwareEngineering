@@ -58,7 +58,7 @@ const signup = async (req, res) => {
         await user.save(); // Save the user to the database
         generateJWTToken(res, user._id); 
         await sendVerificationEmail(user.email, verificationToken);
-        res.status(201).json({
+        res.status(200).json({
             success: true, 
             message: 'User created', 
             user: {
