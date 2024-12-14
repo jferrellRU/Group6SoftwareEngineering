@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../styles/addproduct.css';
 
 const App = () => {
+    const navigate = useNavigate(); // Initialize useNavigate
     const [formData, setFormData] = useState({
         productName: '',
         productDescription: '',
@@ -11,6 +13,34 @@ const App = () => {
     const [imageFile, setImageFile] = useState(null);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState(null); // To store user data (e.g., isAdmin)
+
+    // Check user authentication status
+    useEffect(() => {
+        const checkUserStatus = async () => {
+            try {
+                const response = await fetch('/users/check-auth', {
+                    credentials: 'include', // Ensure session info is included
+                });
+                const data = await response.json();
+                if (data.success && data.user) {
+                    setUser(data.user);
+                    if (data.user.isAdmin === false) {
+                        // Redirect to home if not an admin
+                        navigate('/');
+                    }
+                } else {
+                    // Handle unauthenticated case (optional)
+                    navigate('/');
+                }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                navigate('/');
+            }
+        };
+
+        checkUserStatus(); // Run the function on component mount
+    }, [navigate]); // Empty dependency array ensures it runs once on mount
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
