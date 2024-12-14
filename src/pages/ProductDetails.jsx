@@ -12,6 +12,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]); // State for reviews
   const [error, setError] = useState(null);
+  const [cartMessage, setCartMessage] = useState(""); // State for the cart message
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -68,19 +69,22 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await fetch("http://localhost:8000/orders/add-product-to-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_name: userName,
-          productID: product._id,
-          productName: product.name,
-          quantity: 1,
-          total_price: product.price * 1,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:8000/orders/add-product-to-cart",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_name: userName,
+            productID: product._id,
+            productName: product.name,
+            quantity: 1,
+            total_price: product.price * 1,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to add product to cart");
@@ -88,10 +92,14 @@ const ProductDetails = () => {
 
       const newOrder = await response.json();
       console.log("Product added to cart:", newOrder);
-      alert(`${product.name} has been added to your cart.`);
+
+      // Set success message
+      setCartMessage(`${product.name} has been added to your cart.`);
     } catch (error) {
       console.error("Error adding product to cart:", error);
-      alert("Failed to add product to cart. Please try again.");
+
+      // Set error message
+      setCartMessage("Failed to add product to cart. Please try again.");
     }
   };
 
@@ -115,9 +123,15 @@ const ProductDetails = () => {
           <p>{product.description}</p>
           <p>Price: ${product.price}</p>
           <p>Stock: {product.stockQuantity}</p>
-          <button onClick={handleAddToCart} className="add-to-cart-button">
-            Add to Cart
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <button
+              onClick={handleAddToCart}
+              className="add-to-cart-button"
+            >
+              Add to Cart
+            </button>
+            {cartMessage && <span>{cartMessage}</span>}
+          </div>
         </>
       ) : (
         <p>Loading product details...</p>

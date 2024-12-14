@@ -1,127 +1,111 @@
-/* General Reset */
 body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9; /* Light grey background */
-    color: #333;
-  }
-  
-  /* Checkout Container */
-  .checkout-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px; /* Add more padding for better spacing */
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  /* Orders Section */
-  .orders-section {
-    flex: 2;
-    background: #ffffff; /* White background for cards */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    min-height: 350px; /* Same height as checkout summary */
-  }
-  
-  .orders-section h2 {
-    font-family: 'Arial', sans-serif;
-    font-size: 24px;
-    color: #0066ff; /* Bright blue */
-    margin-bottom: 15px;
-  }
-  
-  .order-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-  }
-  
-  .order-item:last-child {
-    border-bottom: none;
-  }
-  
-  .order-item h4 {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .order-item p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  /* Checkout Summary Section */
-  .checkout-summary {
-    flex: 1;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-    min-height: 350px; /* Matches orders section */
-  }
-  
-  .checkout-summary h3 {
-    font-family: 'Arial', sans-serif;
-    font-size: 22px;
-    color: #0066ff;
-    margin-bottom: 20px;
-  }
-  
-  .checkout-summary p {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .checkout-button {
-    padding: 10px 20px;
-    background-color: #ffde59;
-    color: #0066ff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .checkout-button:hover {
-    background-color: #0066ff;
-    color: white;
-  }
-  
-  /* Alerts */
-  .alerts {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #0066ff;
-    border-radius: 5px;
-    background-color: #e6f7ff; /* Light blue background */
-    color: #0066ff; /* Blue text */
-    font-size: 14px;
-  }
-  
-  /* Space Between Header and Content */
-  header {
-    margin-bottom: 30px; /* Add spacing after the header */
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .checkout-container {
-      flex-direction: column;
-    }
-  
-    .orders-section, .checkout-summary {
-      flex: 1;
-      width: 100%;
-    }
-  }
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.checkout-content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+/* Left Section */
+.left-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #004aad;
+}
+
+.checkout-summary {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.checkout-summary h3 {
+  font-size: 22px;
+  color: #0066ff;
+}
+
+.checkout-summary p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+#payment_options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Right Section */
+.right-section {
+  flex: 3;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.orders-section h2 {
+  font-size: 22px;
+  color: #0066ff;
+}
+
+.order-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-item h4 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.order-item p {
+  font-size: 14px;
+  color: #555;
+}
+
+.alerts {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffeeba;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  color: #856404;
+}
