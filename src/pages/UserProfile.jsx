@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import axios from 'axios';
 import '../styles/userprofile.css';
 
+
 const UserProfile = () => {
   const [authenticated, setAuthenticated] = useState(null); // Track auth state
   const [user, setUser] = useState(null); // Store user details

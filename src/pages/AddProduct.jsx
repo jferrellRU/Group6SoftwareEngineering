@@ -160,6 +160,14 @@ const App = () => {
 
     return (
         <div className="product-form-container">
+            {/* Back Button */}
+            <button
+                onClick={() => navigate(-1)} // Go to the previous page
+                className="back-button"
+            >
+                Back
+            </button>
+
             <h1 className="form-title">Add New Product</h1>
             {message && (
                 <div className={`message ${

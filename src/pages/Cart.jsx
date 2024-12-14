@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "../styles/Home.css"; // Reuse the styles from Home
 import Header from "../components/Header";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -23,30 +25,16 @@ const Cart = () => {
           cartData.map(async (item) => {
             if (item.productID) {
               try {
-                // Fetch the product to get its imageID
                 const productResponse = await fetch(`/products/${item.productID}`);
                 if (productResponse.ok) {
                   const productData = await productResponse.json();
                   if (productData.imageID) {
-                    console.log(`Fetching image for product ${item.productID}`);
                     const imageResponse = await fetch(`/images/${productData.imageID}`);
                     if (imageResponse.ok) {
                       const imageData = await imageResponse.json();
-                      item.imageUrl = imageData.image; // Attach the image URL to the cart item
-                    } else {
-                      console.error(
-                        `Failed to fetch image for product ${item.productID}:`,
-                        imageResponse.statusText
-                      );
+                      item.imageUrl = imageData.image;
                     }
-                  } else {
-                    console.warn(`No imageID for product ${item.productID}`);
                   }
-                } else {
-                  console.error(
-                    `Failed to fetch product ${item.productID}:`,
-                    productResponse.statusText
-                  );
                 }
               } catch (error) {
                 console.error(`Error fetching product or image for item ${item._id}:`, error);
@@ -79,20 +67,6 @@ const Cart = () => {
       });
   };
 
-  // Handle checkout
-  const handleCheckout = () => {
-    fetch("/orders/checkout", { method: "PUT" })
-      .then((response) => response.json())
-      .then(() => {
-        alert("Checkout successful!");
-        setCartItems([]); // Clear the cart
-      })
-      .catch((error) => {
-        console.error("Error during checkout:", error);
-        setError("Failed to process checkout. Please try again.");
-      });
-  };
-
   // Calculate the total price of the cart
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -101,13 +75,11 @@ const Cart = () => {
 
   return (
     <div>
-      {/* Header Section */}
       <header>
         <Header />
       </header>
 
       <div className="cart-container">
-        {/* Left Section: Cart Items */}
         <div className="cart-items">
           <h2>Your Cart</h2>
           {error && <p className="error-message">{error}</p>}
@@ -137,18 +109,19 @@ const Cart = () => {
           )}
         </div>
 
-        {/* Top Right: Check Out Section */}
         {cartItems.length > 0 && (
           <div className="checkout-section">
             <h3>Total: ${totalPrice.toFixed(2)}</h3>
-            <button onClick={handleCheckout} className="checkout-button">
-              Check Out
+            <button
+              onClick={() => navigate("/checkout")} // Navigate to the Checkout page
+              className="checkout-button"
+            >
+              Go to Checkout
             </button>
           </div>
         )}
       </div>
 
-      {/* Footer Section */}
       <footer>
         <p>&copy; 2024 Dizzy Designs. All rights reserved.</p>
       </footer>
