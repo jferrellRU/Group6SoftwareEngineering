@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddReview = ({ productId, userId }) => {
+const AddReview = ({ productId, userId, userName, productName }) => {
     const [reviewData, setReviewData] = useState({
         rating: "",
         comment: "",
@@ -26,7 +26,9 @@ const AddReview = ({ productId, userId }) => {
             // Construct the payload
             const reviewPayload = {
                 userId, // User ID to associate the review
+                userName,
                 productId, // Product ID to associate the review
+                productName,
                 rating: parseInt(reviewData.rating, 10),
                 comment: reviewData.comment.trim(),
             };
