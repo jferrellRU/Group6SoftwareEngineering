@@ -47,9 +47,9 @@ login-container {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional, soft shadow */
 }
 
-h2 {
+h1 {
     font-family: 'Sprite Graffiti', Arial, sans-serif;
-    font-size: 72px;
+    font-size: 60px;
     color: #0066ff;
     margin-top: 0;
 }
@@ -60,7 +60,7 @@ input[type="password"] {
 }
 
 /* Style the email and password labels */
-label[for="email"], label[for="password"], label[for="name"] {
+label[for="email"], label[for="password"] {
     font-family: 'Sprite Graffiti', Arial, sans-serif; /* Apply custom font */
     font-size: 20px; /* Increase font size */
     color: #0066ff; /* Set color for the labels */
@@ -70,17 +70,8 @@ label[for="email"], label[for="password"], label[for="name"] {
     letter-spacing: 1px; /* Optional: add letter spacing */
 }
 
-label[for="verificationCode"] {
-    font-family: 'Sprite Graffiti', Arial, sans-serif; /* Use custom font */
-    font-size: 20px; /* Font size for the label */
-    color: #0066ff; /* Label text color */
-    display: block; /* Make the label a block-level element */
-    margin-bottom: 5px; /* Add space below the label */
-    text-transform: uppercase; /* Capitalize all text */
-    letter-spacing: 1px; /* Optional: add letter spacing */
-}
 
-input[type="email"], input[type="password"], input[type="text"] {
+input[type="email"], input[type="password"] {
     font-family: Arial, sans-serif; /* Apply custom font */
     font-size: 18px; /* Increase font size */
     padding: 12px; /* Add padding to make the field larger */
@@ -93,7 +84,7 @@ input[type="email"], input[type="password"], input[type="text"] {
 }
 
 /* Add focus effect */
-input[type="email"]:focus, input[type="password"]:focus, input[type="text"] {
+input[type="email"]:focus, input[type="password"]:focus {
     outline: none; /* Remove default focus outline */
     border-color: #0044cc; /* Change border color on focus */
     box-shadow: 0 0 8px rgba(0, 102, 255, 0.5); /* Optional: add a shadow on focus */

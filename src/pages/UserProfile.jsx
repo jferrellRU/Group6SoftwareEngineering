@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
+import '../styles/userprofile.css';
 
 const UserProfile = () => {
   const [authenticated, setAuthenticated] = useState(null); // Track auth state
