@@ -6,9 +6,9 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required:  true},
     isVerified: { type: Boolean, default: false },
-    isSeller: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false },
     address: { type: String, required: false },
-    inCart: { type: Array, default: [] }, // this is an array that will have productID's pushed to it
+    orderHistory: { type: List, default: [] },
     resetPasswordToken:String,
     resetPasswordExpiresAt: Date,
     verificationToken:String,
