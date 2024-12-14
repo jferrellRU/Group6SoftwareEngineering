@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     isVerified: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
     address: { type: String, required: false },
+    orderHistory: { type: List, default: [] },
     resetPasswordToken:String,
     resetPasswordExpiresAt: Date,
     verificationToken:String,
