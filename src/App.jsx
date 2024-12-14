@@ -14,7 +14,6 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import AddReview from './pages/AddReview'
 import Checkout from './pages/Checkout';
-import PendingOrders from './pages/PendingOrders';
 
 const App = () => {
   return (
@@ -37,7 +36,6 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/pending-orders" element={<PendingOrders />} />
       </Routes>
     </Router>
   );
