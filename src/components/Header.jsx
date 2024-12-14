@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import '../styles/Header.css';
 import logo from '../assets/DizzyDesign.png'; // Import the image correctly
@@ -53,6 +52,15 @@ const Header = () => {
             </a>
           </li>
           <li><a href="/search">SEARCH</a></li>
+
+          {/* Conditional rendering of Pending Orders for Admin users */}
+          {authenticated && user?.isAdmin && (
+            <li><a href="/orders-history">Order History</a></li>
+          )}
+          {/* Conditional rendering of Pending Orders for Admin users */}
+          {authenticated && user?.isAdmin && (
+            <li><a href="/add-product">Add Inventory</a></li>
+          )}
         </ul>
       </nav>
     </header>

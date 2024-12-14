@@ -8,31 +8,20 @@ const crypto = require('crypto');
 
 // Get all users
 
-const getUsers = async (req, res) => {
-    try {
-        const users = await User.find(); // Fetch all users from the database
-        res.status(200).json({ message: 'Get all users', users });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
 
 // Get a user by ID
-const getUserById = async (req, res) => {
+const getUser = async (req, res) => {
     try {
-        const userId = req.params.userId;
-        if (!userId) {
-            return res.status(400).json({ error: 'User ID is required' });
-        }
-        const user = await User.findById(userId); // Fetch the user by ID
+        const user = await User.findById(req.userId);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.status(200).json({ message: `Get user with ID: ${userId}`, user });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+            return res.status(400).json({success: false, message: "User not Found"});
+        }     
+        res.status(200).json( {...user._doc, password: undefined} )
+    } catch(error) {
+        console.log('Error checking authentification', error);
+        res.status(400).json({success: false, message: error.message});
     }
-};
+  }
 
 // Create a new user
 const signup = async (req, res) => {
@@ -71,24 +60,6 @@ const signup = async (req, res) => {
     }
 };
 
-// Update an existing user
-const updateUser = async (req, res) => {
-    const userId = req.params.userId;
-    const updatedData = req.body;
-    try {
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            updatedData,
-            { new: true } // Return the updated document
-        );
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.status(200).json({ message: `User with ID: ${userId} updated`, user: updatedUser });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
 
 // Delete a user
 const deleteUser = async (req, res) => {
@@ -133,9 +104,6 @@ const login = async (req, res) => {
     }
 };
 
-const me = async (req, res) => {
-    res.send(req.user);
-}
 const verifyEmail = async (req, res) => {
     const { code } = req.body;
     try {
@@ -215,11 +183,38 @@ const checkAuth = async (req, res) => {
         if (!user) {
             return res.status(400).json({success: false, message: "User not Found"});
         }     
-        console.log(user.userID);
         res.status(200).json({success: true, user: {...user._doc, password: undefined}})
     } catch(error) {
         console.log('Error checking authentification', error);
         res.status(400).json({success: false, message: error.message});
     }
 }
-module.exports = { getUsers, getUserById, signup, logout, updateUser, deleteUser, login, me, verifyEmail,forgotPassword, resetPassword,checkAuth };
+
+const isAdmin = async (req, res) => {
+    const { userId, adminPassword } = req.body;
+  
+    try {
+      // Check if the admin password is correct
+      if (adminPassword !== "AdminPassword") {
+        return res.status(403).json({ success: false, message: "Invalid admin password" });
+      }
+  
+      // Fetch user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      // Update user's isAdmin property
+      user.isAdmin = true;
+      await user.save();
+  
+      res.status(200).json({ success: true, message: "User is now an administrator" });
+    } catch (error) {
+      console.error("Error making user admin:", error);
+      res.status(500).json({ success: false, message: "An error occurred" });
+    }
+  };
+  
+  
+module.exports = { isAdmin, getUser, signup, logout, deleteUser, login, verifyEmail,forgotPassword, resetPassword,checkAuth };
