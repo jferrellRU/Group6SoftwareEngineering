@@ -123,13 +123,21 @@ const ProductDetails = () => {
         <p>Loading product details...</p>
       )}
 
-      <AddReview productId={id} userId={userId} />
+      {/* Pass the dynamic productName */}
+      {product && (
+        <AddReview
+          productId={id}
+          userId={userId}
+          userName={userName}
+          productName={product.name}
+        />
+      )}
 
       <h2>Customer Reviews</h2>
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review._id} className="review">
-            <h3>{review.userId}</h3>
+            <h3>{review.userName}</h3>
             <p>Rating: {review.rating}/5</p>
             <p>{review.comment}</p>
           </div>

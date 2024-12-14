@@ -10,7 +10,6 @@ const getAllReviews = async (req, res) => {
     }
 };
 
-
 // Get reviews for a specific product
 const getReviewsByProductId = async (req, res) => {
     try {
@@ -34,8 +33,8 @@ const getReviewsByUserId = async (req, res) => {
 // Create a new review
 const createReview = async (req, res) => {
     try {
-        const { userId, productId, rating, comment } = req.body;
-        const newReview = new Review({ userId, productId, rating, comment }); // Create a new review
+        const { userId, userName, productId, productName, rating, comment } = req.body;
+        const newReview = new Review({ userId, userName, productId, productName, rating, comment }); // Create a new review
         const savedReview = await newReview.save(); // Save it to the database
         res.status(201).json({ message: 'Review created', review: savedReview });
     } catch (err) {
@@ -46,10 +45,10 @@ const createReview = async (req, res) => {
 // Update an existing review
 const updateReview = async (req, res) => {
     try {
-        const { rating, comment } = req.body;
+        const { rating, comment} = req.body;
         const updatedReview = await Review.findByIdAndUpdate(
             req.params.id,
-            { rating, comment },
+            { rating, comment},
             { new: true } // Return the updated document
         );
         if (!updatedReview) {
