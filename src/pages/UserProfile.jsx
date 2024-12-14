@@ -92,6 +92,15 @@ const UserProfile = () => {
         </div>
       )}
 
+      {/* Link to change password */}
+      <div>
+        <p>
+          <Link to="/forgot-password">Change Password</Link>
+        </p>
+      </div>
+
+      <button onClick={handleLogout}>Log Out</button>
+
       {/* Display user's reviews */}
       <h2>Your Reviews</h2>
       {userReviews.length > 0 ? (
@@ -105,15 +114,6 @@ const UserProfile = () => {
       ) : (
         <p>You haven't reviewed any products yet.</p>
       )}
-
-      {/* Link to change password */}
-      <div>
-        <p>
-          <Link to="/forgot-password">Change Password</Link>
-        </p>
-      </div>
-
-      <button onClick={handleLogout}>Log Out</button>
     </div>
   );
 };
