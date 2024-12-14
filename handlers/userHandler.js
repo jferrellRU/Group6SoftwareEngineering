@@ -183,11 +183,38 @@ const checkAuth = async (req, res) => {
         if (!user) {
             return res.status(400).json({success: false, message: "User not Found"});
         }     
-        console.log(user.userID);
         res.status(200).json({success: true, user: {...user._doc, password: undefined}})
     } catch(error) {
         console.log('Error checking authentification', error);
         res.status(400).json({success: false, message: error.message});
     }
 }
-module.exports = { getUser, signup, logout, deleteUser, login, verifyEmail,forgotPassword, resetPassword,checkAuth };
+
+const isAdmin = async (req, res) => {
+    const { userId, adminPassword } = req.body;
+  
+    try {
+      // Check if the admin password is correct
+      if (adminPassword !== "AdminPassword") {
+        return res.status(403).json({ success: false, message: "Invalid admin password" });
+      }
+  
+      // Fetch user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      // Update user's isAdmin property
+      user.isAdmin = true;
+      await user.save();
+  
+      res.status(200).json({ success: true, message: "User is now an administrator" });
+    } catch (error) {
+      console.error("Error making user admin:", error);
+      res.status(500).json({ success: false, message: "An error occurred" });
+    }
+  };
+  
+  
+module.exports = { isAdmin, getUser, signup, logout, deleteUser, login, verifyEmail,forgotPassword, resetPassword,checkAuth };

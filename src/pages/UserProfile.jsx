@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
+import axios from 'axios';
+
 
 const UserProfile = () => {
   const [authenticated, setAuthenticated] = useState(null); // Track auth state
   const [user, setUser] = useState(null); // Store user details
   const [feedback, setFeedback] = useState(""); // Feedback message
+  const [adminPassword, setAdminPassword] = useState(""); // Admin password input
   const navigate = useNavigate();
 
   // Authentication function
@@ -57,6 +60,35 @@ const UserProfile = () => {
     }
   };
 
+
+  const handleMakeAdmin = async () => {
+    try {  
+        const username = user._id;
+        console.log(username);
+
+
+      const response = await fetch("/users/is-admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: username, // Use the current user's ID
+          adminPassword, // Admin password entered by the user
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFeedback("User successfully made an administrator.");
+      } else {
+        setFeedback(data.message || "Failed to make user admin.");
+      }
+    } catch (error) {
+      console.error("Error making user admin:", error);
+      setFeedback("An error occurred.");
+    }
+  };
+
   if (authenticated === null) {
     return <div>Loading...</div>; // Show loading state while authenticating
   }
@@ -80,6 +112,19 @@ const UserProfile = () => {
         <p>
           <Link to="/forgot-password">Change Password</Link>
         </p>
+      </div>
+
+      {/* Admin password input */}
+      <div>
+        <label>
+          Enter Admin Password:
+          <input
+            type="password"
+            value={adminPassword}
+            onChange={(e) => setAdminPassword(e.target.value)}
+          />
+        </label>
+        <button onClick={handleMakeAdmin}>Make Admin</button>
       </div>
 
       <button onClick={handleLogout}>Log Out</button>
