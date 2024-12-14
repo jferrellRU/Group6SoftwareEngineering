@@ -55,7 +55,7 @@ const Header = () => {
 
           {/* Conditional rendering of Pending Orders for Admin users */}
           {authenticated && user?.isAdmin && (
-            <li><a href="/pending-orders">PENDING ORDERS</a></li>
+            <li><a href="/orders-history">Order History</a></li>
           )}
           {/* Conditional rendering of Pending Orders for Admin users */}
           {authenticated && user?.isAdmin && (
