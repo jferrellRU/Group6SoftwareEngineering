@@ -123,15 +123,10 @@ const ProductDetails = () => {
           <p>{product.description}</p>
           <p>Price: ${product.price}</p>
           <p>Stock: {product.stockQuantity}</p>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <button
-              onClick={handleAddToCart}
-              className="add-to-cart-button"
-            >
-              Add to Cart
-            </button>
-            {cartMessage && <span>{cartMessage}</span>}
-          </div>
+          <button onClick={handleAddToCart} className="add-to-cart-button">
+            Add to Cart
+          </button>
+
         </>
       ) : (
         <p>Loading product details...</p>

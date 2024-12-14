@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
 import axios from 'axios';
+import '../styles/userprofile.css';
 
 
 const UserProfile = () => {
@@ -224,7 +225,7 @@ const UserProfile = () => {
       {/* Link to change password */}
       <div>
         <p>
-          <Link to="/forgot-password">Change Password</Link>
+        <Link to={`/reset-password/${user.resetToken}`}>Change Password</Link>
         </p>
       </div>
 
