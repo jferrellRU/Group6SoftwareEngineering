@@ -81,17 +81,28 @@ const Cart = () => {
 
   // Handle checkout
   const handleCheckout = () => {
-    fetch("/orders/checkout", { method: "PUT" })
-      .then((response) => response.json())
-      .then(() => {
+    fetch("/orders/checkout", { 
+        method: "PUT", 
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ user_name: userName }) // Ensure you send the user_name in the body
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Checkout failed");
+        }
+        return response.json();
+    })
+    .then(() => {
         alert("Checkout successful!");
         setCartItems([]); // Clear the cart
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.error("Error during checkout:", error);
         setError("Failed to process checkout. Please try again.");
-      });
-  };
+    });
+};
 
   // Calculate the total price of the cart
   const totalPrice = cartItems.reduce(

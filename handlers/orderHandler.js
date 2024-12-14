@@ -72,6 +72,37 @@ const deleteOrder = (req, res) => {
 };
 
 
+const updateOrderStatus = async (userName, newStatus) => {
+    try {
+        await Order.updateMany({ user_name: userName, status: 'in_cart' }, { status: newStatus });
+    }
+    catch (error) {
+        console.error('Error updating order status:', error);
+        return Promise.reject(error);
+    }
+    console.log(`Updating order status for user: ${userName} to ${newStatus}`);
+    return Promise.resolve(); // Replace with real database update
+};
+
+const handleCheckout = async (req, res) => {
+    const userName = req.body.user_name; // Assumes user_name is sent in the request body
+
+    if (!userName) {
+        return res.status(400).send({ error: 'User name is required' });
+    }
+
+    try {
+        await updateOrderStatus(userName, 'in_checkout');
+
+        res.status(200).send({ message: 'Checkout successful!' });
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).send({ error: 'Failed to process checkout' });
+    }
+};
+
+
+
 
 module.exports = {
     getAllOrders,
@@ -82,5 +113,6 @@ module.exports = {
     getTotalPrice,
     getOrderStatus,
     addProductAsOrder,
-    deleteOrder
+    deleteOrder,
+    handleCheckout
 };

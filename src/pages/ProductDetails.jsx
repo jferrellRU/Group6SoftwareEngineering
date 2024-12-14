@@ -70,7 +70,7 @@ const ProductDetails = () => {
   // Function to handle "Add to Cart" action
   const handleAddToCart = async () => {
     try {
-      const response = await fetch("http://localhost:8000/orders/add-product-to-cart", {
+      const response = await fetch("/orders/add-product-to-cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
