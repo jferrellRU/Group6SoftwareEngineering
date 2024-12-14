@@ -13,6 +13,7 @@ router.post('/forgot-password', userHandler.forgotPassword);
 router.post('/reset-password/:token', userHandler.resetPassword);
 router.get('/check-auth', verifyToken, userHandler.checkAuth);
 router.get('/get-user', verifyToken, userHandler.getUser);
+router.post('/is-admin', userHandler.isAdmin);
 
 //router.get('/', userHandler.getUsers);
 //router.get('/:userId', userHandler.getUserById);
