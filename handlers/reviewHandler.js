@@ -21,6 +21,16 @@ const getReviewsByProductId = async (req, res) => {
     }
 };
 
+// Get reviews for a specific user
+const getReviewsByUserId = async (req, res) => {
+    try {
+        const reviews = await Review.find({ userId: req.params.userId }); // Fetch reviews by user ID
+        res.status(200).json(reviews);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 // Create a new review
 const createReview = async (req, res) => {
     try {
@@ -67,6 +77,7 @@ const deleteReview = async (req, res) => {
 module.exports = {
     getAllReviews,
     getReviewsByProductId,
+    getReviewsByUserId,
     createReview,
     updateReview,
     deleteReview,
