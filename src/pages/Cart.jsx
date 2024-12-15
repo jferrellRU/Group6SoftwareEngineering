@@ -96,11 +96,10 @@ const Cart = () => {
           {error && <p className="error-message">{error}</p>}
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
-              <div key={item._id} className="cart-item-card">
+              <div key={item._id} className="product">
                 <img
                   src={item.imageUrl || "https://via.placeholder.com/150"}
                   alt={item.productName || "Product"}
-                  className="cart-item-image"
                 />
                 <div className="cart-item-details">
                   <h3>{item.productName}</h3>
