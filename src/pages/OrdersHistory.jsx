@@ -25,7 +25,7 @@ const OrdersHistory = () => {
                         navigate("/");
                     } else {
                         // Fetch orders if the user is an admin
-                        fetchOrders();
+                        fetchOrdersWithImages();
                     }
                 } else {
                     // Redirect to home if not authenticated
@@ -40,34 +40,58 @@ const OrdersHistory = () => {
         checkUserStatus(); // Run the function on component mount
     }, [navigate]);
 
-    const fetchOrders = async () => {
+    // Fetch orders and attach images dynamically
+    const fetchOrdersWithImages = async () => {
         try {
             const response = await fetch("/orders");
-            const data = await response.json();
-            console.log("Fetched orders:", data);
-            setOrders(data);
+            const ordersData = await response.json();
+            console.log("Fetched orders:", ordersData);
+
+            const ordersWithImages = await Promise.all(
+                ordersData.map(async (order) => {
+                    if (order.productID) {
+                        try {
+                            // Fetch product details
+                            const productResponse = await fetch(`/products/${order.productID}`);
+                            const productData = await productResponse.json();
+
+                            // Fetch image if imageID exists
+                            if (productData.imageID) {
+                                const imageResponse = await fetch(`/images/${productData.imageID}`);
+                                if (imageResponse.ok) {
+                                    const imageData = await imageResponse.json();
+                                    order.imageURL = imageData.image; // Attach image URL dynamically
+                                }
+                            }
+                        } catch (error) {
+                            console.error(`Error fetching image for order ${order._id}:`, error);
+                        }
+                    }
+                    return order;
+                })
+            );
+
+            setOrders(ordersWithImages);
         } catch (error) {
             console.error("Error fetching orders:", error);
         } finally {
-            setLoading(false); // Stop loading once data is fetched
+            setLoading(false); // Stop loading
         }
     };
 
     // Handle cancel order
     async function handleCancel(orderID) {
-        if (!window.confirm('Are you sure you want to cancel this order?')) return;
+        if (!window.confirm("Are you sure you want to cancel this order?")) return;
 
         try {
             const response = await fetch(`/orders/${orderID}/cancel`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
             });
 
             if (!response.ok) {
-                console.error('Failed to cancel order:', response.statusText);
-                alert('Failed to cancel the order. Please try again.');
+                console.error("Failed to cancel order:", response.statusText);
+                alert("Failed to cancel the order. Please try again.");
                 return;
             }
 
@@ -77,14 +101,14 @@ const OrdersHistory = () => {
             // Update the orders state to reflect the cancellation
             setOrders((prevOrders) =>
                 prevOrders.map((order) =>
-                    order.orderID === orderID ? { ...order, status: 'canceled' } : order
+                    order._id === orderID ? { ...order, status: "canceled" } : order
                 )
             );
 
-            alert('Order successfully canceled!');
+            alert("Order successfully canceled!");
         } catch (error) {
-            console.error('Error canceling order:', error);
-            alert('An error occurred. Please try again.');
+            console.error("Error canceling order:", error);
+            alert("An error occurred. Please try again.");
         }
     }
 
@@ -103,9 +127,10 @@ const OrdersHistory = () => {
                         <p>Loading orders...</p>
                     ) : orders.length > 0 ? (
                         orders.map((order) => (
-                            <div key={order.orderID} className="order-card">
+                            <div key={order._id} className="order-card">
+                                {/* Dynamically fetched image */}
                                 <img
-                                    src={order.image}
+                                    src={order.imageURL || "/assets/placeholder.png"}
                                     alt={order.productName}
                                     className="order-image"
                                 />
@@ -117,13 +142,12 @@ const OrdersHistory = () => {
                                     <button
                                         className="cancel-button"
                                         onClick={() => {
-                                          console.log("Order being canceled:", order); // Log the full order object
-                                          console.log("Order ID:", order._id);
-                                          handleCancel(order._id)
+                                            console.log("Order being canceled:", order); // Log the full order object
+                                            handleCancel(order._id);
                                         }}
-                                        disabled={order.status === 'canceled'}
+                                        disabled={order.status === "canceled"}
                                     >
-                                        {order.status === 'canceled' ? 'Canceled' : 'Cancel'}
+                                        {order.status === "canceled" ? "Canceled" : "Cancel"}
                                     </button>
                                 </div>
                             </div>
