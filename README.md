@@ -1,6 +1,6 @@
 # Dizzy Designs
 
-A brief description of what this project does and who it's for.
+This is a retail website that allows only administrator to login and add/edit products as well as see the total order history. It allows users to sign in and has email verification and forgot password support. You can click on products in the home screen, see the product and it's description as well as leave a review. You can then add to cart and checkout with PayPal. 
 
 ## Installation
 
