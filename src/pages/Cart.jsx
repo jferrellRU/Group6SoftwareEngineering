@@ -6,6 +6,7 @@ import Header from "../components/Header";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0); // State to store total price
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -21,7 +22,6 @@ const Cart = () => {
 
         const cartData = await response.json();
 
-        // Filter only items with 'in_cart' status
         const filteredCartItems = cartData.filter((item) => item.status === "in_cart");
 
         // Fetch images for each product in the filtered cart
@@ -48,7 +48,12 @@ const Cart = () => {
           })
         );
 
+        console.log("Cart Items After Processing:", cartItemsWithImages);
+
         setCartItems(cartItemsWithImages);
+
+        // Calculate total price
+        calculateTotalPrice(cartItemsWithImages);
       } catch (error) {
         console.error("Error fetching cart items:", error);
         setError("Failed to load cart items. Please try again.");
@@ -58,12 +63,20 @@ const Cart = () => {
     fetchCartItems();
   }, []);
 
+  // Function to calculate total price
+  const calculateTotalPrice = (items) => {
+    const total = items.reduce((sum, item) => sum + (item.total_price || 0), 0);
+    setTotalPrice(total);
+  };
+
   // Handle removing an item from the cart
   const handleRemove = (orderID) => {
     fetch(`/orders/${orderID}/remove`, { method: "DELETE" })
       .then((response) => response.json())
       .then(() => {
-        setCartItems(cartItems.filter((item) => item._id !== orderID));
+        const updatedCartItems = cartItems.filter((item) => item._id !== orderID);
+        setCartItems(updatedCartItems);
+        calculateTotalPrice(updatedCartItems); // Recalculate total price
       })
       .catch((error) => {
         console.error("Error removing item:", error);
@@ -71,12 +84,6 @@ const Cart = () => {
       });
   };
 
-  // Calculate the total price of the cart
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  
   return (
     <div>
       <header>
@@ -97,7 +104,7 @@ const Cart = () => {
                 />
                 <div className="cart-item-details">
                   <h3>{item.productName}</h3>
-                  <p>Price: ${item.price}</p>
+                  <p>Price: ${item.total_price}</p>
                   <p>Quantity: {item.quantity}</p>
                   <button
                     className="remove-button"
@@ -113,6 +120,7 @@ const Cart = () => {
           )}
         </div>
 
+        {/* Total Price and Checkout Section */}
         {cartItems.length > 0 && (
           <div className="checkout-section">
             <h3>Total: ${totalPrice.toFixed(2)}</h3>
