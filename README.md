@@ -1,8 +1,10 @@
 # Dizzy Designs
 
 Dizzy Designs is an online clothing retail website allowing customers to browse through different clothing options seamlessly, add items to their cart, order items, and leave reviews. Our website will be accessible by the two groups mentioned below.
+
 Non-registered users will be able to access all of the basic features of the website such as viewing clothes, adding items to cart, and placing an order. They will also be able to use text-based searches to locate items more efficiently. In order to save things in their cart for later, leave reviews, or see previous purchases, they will have to create an account and become a registered user. There will also be specific incentives such as discounts which are accessible to those who register and make an account for Dizzy Designs.
-	Registered users can save their credit card information, home address, access discounts, and will be able to view their previous purchases. Registered users will also have the ability to place product reviews on product pages and these reviews will be saved in the database to be viewed by all who visit the product site. Moreover, registered users will be able to have their shopping cart data saved from previous sessions if website cache is cleared.
+
+Registered users can save their credit card information, home address, access discounts, and will be able to view their previous purchases. Registered users will also have the ability to place product reviews on product pages and these reviews will be saved in the database to be viewed by all who visit the product site. Moreover, registered users will be able to have their shopping cart data saved from previous sessions if website cache is cleared.
 
 
 ## Installation
