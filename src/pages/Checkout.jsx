@@ -10,9 +10,13 @@ const Checkout = () => {
   const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
+    
     const fetchOrdersWithImages = async () => {
       try {
         const response = await axios.get('/orders');
+        console.log('Fetched Orders:', response.data);
+        setOrders(response.data); // Set the orders state
+        calculateTotal(response.data);
         const ordersData = response.data;
 
         const ordersWithImages = await Promise.all(
@@ -54,6 +58,13 @@ const Checkout = () => {
       .catch(error => console.error('Error fetching PayPal config:', error));
   }, []);
 
+  useEffect(() => {
+    if (orders.length > 0) {
+        console.log('Rendering PayPal Buttons - Orders:', orders);
+        renderPayPalButtons(); // Render PayPal buttons after orders are fetched
+    }
+  }, [orders]);
+
   const calculateTotal = (orders) => {
     const total = orders
       .filter(order => order.status === 'in_cart')
@@ -82,6 +93,7 @@ const Checkout = () => {
     if (!container) return;
 
     container.innerHTML = '';
+    console.log('Orders State Before PayPal:', orders); 
 
     window.paypal.Buttons({
       onClick: () => console.log('PayPal button clicked'),
@@ -92,23 +104,44 @@ const Checkout = () => {
         label: 'paypal',
       },
       createOrder: () => {
+        const intent = 'CAPTURE'; // Define the intent locally
+        console.log('Intent being sent to backend:', intent);
         return axios.post('/paypal/create_order', { intent })
           .then(response => response.data.id)
           .catch(error => {
             throw error;
           });
       },
-      onApprove: (data) => {
-        return axios.post('/paypal/complete_order', { order_id: data.orderID })
-          .then(response => {
-            const orderDetails = response.data;
-            const intentObject = intent === 'authorize' ? 'authorizations' : 'captures';
-            setAlerts(`Thank you ${orderDetails.payer.name.given_name} ${orderDetails.payer.name.surname} for your payment of ${orderDetails.purchase_units[0].payments[intentObject][0].amount.value} ${orderDetails.purchase_units[0].payments[intentObject][0].amount.currency_code}!`);
-          })
-          .catch(error => {
-            setAlerts("An error occurred during payment.");
-          });
-      },
+      onApprove: () => {
+        // Find all orders in the cart
+        console.log('onApprove triggered'); // Basic log
+        const inCartOrders = orders.filter(order => order.status === 'in_cart');
+        console.log('Orders in Cart:', inCartOrders);
+    
+        // Update the status of each order to 'completed'
+        Promise.all(
+            inCartOrders.map(order =>
+                axios.put(`/orders/${order._id}/complete`) // Call the backend route for each order
+                .then(response => console.log('Order Updated:', response.data)) // Log each response
+
+            )
+        )
+            .then(() => {
+                console.log('All orders marked as completed.');
+                setAlerts('Thank you for your payment! Your order has been completed successfully.');
+    
+                // Update the state directly to avoid refetching
+                const updatedOrders = orders.map(order =>
+                    order.status === 'in_cart' ? { ...order, status: 'completed' } : order
+                );
+                setOrders(updatedOrders);
+            })
+            .catch(error => {
+                console.error('Error completing orders:', error);
+                setAlerts('An error occurred while updating your order. Please try again.');
+            });
+    },
+    
       onCancel: () => setAlerts("Order cancelled!"),
       onError: () => setAlerts("An error occurred with PayPal."),
     }).render('#payment_options');
