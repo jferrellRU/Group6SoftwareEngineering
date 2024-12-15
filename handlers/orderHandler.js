@@ -16,6 +16,7 @@ const handleResponse = async (res, operation) => {
 // View all orders (including canceled orders)
 const getAllOrders = (req, res) => {
     handleResponse(res, Order.find());
+    
 };
 
 // View only canceled orders
@@ -71,6 +72,27 @@ const deleteOrder = (req, res) => {
     handleResponse(res, Order.findByIdAndDelete(req.params.id));
 };
 
+const completeSpecificOrder = async (req, res) => {
+    const { id } = req.params; // Extract order ID from the request URL
+
+    try {
+        const updatedOrder = await Order.findByIdAndUpdate(
+            id, // Find the order by ID
+            { $set: { status: 'completed' } }, // Update the status to 'completed'
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Order not found.' });
+        }
+
+        res.status(200).json({ message: 'Order marked as completed.', order: updatedOrder });
+    } catch (error) {
+        console.error('Error completing order:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 
 module.exports = {
@@ -82,5 +104,6 @@ module.exports = {
     getTotalPrice,
     getOrderStatus,
     addProductAsOrder,
-    deleteOrder
+    deleteOrder,
+    completeSpecificOrder,
 };

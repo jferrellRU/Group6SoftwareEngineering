@@ -11,5 +11,6 @@ router.get('/:id/total-price', orderHandler.getTotalPrice);
 router.get('/:id/status', orderHandler.getOrderStatus);
 router.post('/add-product-to-cart', orderHandler.addProductAsOrder);
 router.delete('/:id/remove', orderHandler.deleteOrder);
+router.put('/:id/complete', orderHandler.completeSpecificOrder);
 
 module.exports = router;

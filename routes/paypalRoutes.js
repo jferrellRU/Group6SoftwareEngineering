@@ -51,6 +51,10 @@ router.get('/test', async (req, res) => {
 router.post('/create_order', async (req, res) => {
   try {
     const { intent } = req.body;
+    if (!intent) {
+      console.error('Intent is missing from the request body');
+      return res.status(400).json({ error: 'Intent is required in the request body' });
+  }
     const accessToken = await generateAccessToken();
 
     const orderData = {
@@ -59,7 +63,7 @@ router.post('/create_order', async (req, res) => {
         {
           amount: {
             currency_code: 'USD',
-            value: '100.00',
+            value: '00.01',
           },
         },
       ],
