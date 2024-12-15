@@ -11,6 +11,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
+        // Fetch all orders with status 'in_cart'
         const response = await fetch("/orders?status=in_cart");
         if (!response.ok) {
           console.error("Failed to fetch cart items:", response.statusText);
@@ -20,9 +21,12 @@ const Cart = () => {
 
         const cartData = await response.json();
 
-        // Fetch images for each product in the cart
+        // Filter only items with 'in_cart' status
+        const filteredCartItems = cartData.filter((item) => item.status === "in_cart");
+
+        // Fetch images for each product in the filtered cart
         const cartItemsWithImages = await Promise.all(
-          cartData.map(async (item) => {
+          filteredCartItems.map(async (item) => {
             if (item.productID) {
               try {
                 const productResponse = await fetch(`/products/${item.productID}`);
@@ -72,7 +76,7 @@ const Cart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-
+  
   return (
     <div>
       <header>
