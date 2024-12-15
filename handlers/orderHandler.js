@@ -16,7 +16,6 @@ const handleResponse = async (res, operation) => {
 // View all orders (including canceled orders)
 const getAllOrders = (req, res) => {
     handleResponse(res, Order.find());
-    
 };
 
 // View only canceled orders
