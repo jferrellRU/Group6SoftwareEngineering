@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/login.css';
 
 const SignUp = () => {
@@ -14,6 +14,23 @@ const SignUp = () => {
   const [success, setSuccess] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
+  const navigate = useNavigate();
+
+  // Check user role and redirect if not admin
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const response = await axios.get('/users/check-auth');
+        if (response.data.success) {
+          navigate('/'); // Redirect non-admin users to the home page
+        }
+      } catch (err) {
+        console.error('Error checking user authentication:', err);
+      }
+    };
+
+    checkUser();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +63,7 @@ const SignUp = () => {
       if (response.status === 200) {
         alert('Email verification successful!');
         setIsVerifying(false);
-        window.location.href = '/Login'; // Redirect to login page after successful verification
+        navigate('/login'); // Redirect to the login page after successful verification
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid verification code');
