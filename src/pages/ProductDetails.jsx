@@ -91,7 +91,7 @@ const ProductDetails = () => {
       }
 
       const newOrder = await response.json();
-      console.log("Product added to cart:", newOrder);
+      alert(`Product added to cart: ${product.name}`);
 
       // Set success message
       setCartMessage(`${product.name} has been added to your cart.`);
