@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import Header from "../components/Header";
@@ -12,6 +12,22 @@ const Login = () => {
 
   const [error, setError] = useState('');
   const navigate = useNavigate(); // Initialize useNavigate
+
+  //Redirect home if user logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get('/users/check-auth');
+        if (response.data.success) {
+          navigate('/'); // Redirect to homepage if authenticated
+        }
+      } catch (err) {
+        console.log('User is not authenticated:', err);
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +91,3 @@ const Login = () => {
 };
 
 export default Login;
-to homepage
-      }
-    } catch (err) {
