@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import AddReview from "./AddReview";
 import Header from "../components/Header";
+import '../styles/product.css';
 import { UserContext } from "../UserContext";
 
 const ProductDetails = () => {
@@ -91,7 +92,7 @@ const ProductDetails = () => {
       }
 
       const newOrder = await response.json();
-      console.log("Product added to cart:", newOrder);
+      alert(`Product added to cart: ${product.name}`);
 
       // Set success message
       setCartMessage(`${product.name} has been added to your cart.`);

@@ -225,7 +225,7 @@ const UserProfile = () => {
       {/* Link to change password */}
       <div>
         <p>
-        <Link to={`/reset-password/${user.resetToken}`}>Change Password</Link>
+        <Link to={`/forgot-password/`}>Change Password</Link>
         </p>
       </div>
 
