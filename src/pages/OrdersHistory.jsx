@@ -71,8 +71,9 @@ const OrdersHistory = () => {
                     return order;
                 })
             );
+            const completedOrders = ordersWithImages.filter((order) => order.status === "completed");
 
-            setOrders(ordersWithImages);
+            setOrders(completedOrders);
         } catch (error) {
             console.error("Error fetching orders:", error);
         } finally {
@@ -128,12 +129,11 @@ const OrdersHistory = () => {
                         <p>Loading orders...</p>
                     ) : orders.length > 0 ? (
                         orders.map((order) => (
-                            <div key={order._id} className="order-card">
+                            <div key={order._id} className="product">
                                 {/* Dynamically fetched image */}
                                 <img
                                     src={order.imageURL || "/assets/placeholder.png"}
                                     alt={order.productName}
-                                    className="order-image"
                                 />
                                 <div className="order-details">
                                     <h3>{order.productName}</h3>
