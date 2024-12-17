@@ -1,0 +1,145 @@
+/* General styles for Cart */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #444;
+    margin-top: 20px;
+  }
+  
+  /* Cart Container */
+  .cart-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center; /* Center-aligns the content within the container */
+  }
+  
+  /* Cart Items Grid */
+  .cart-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-top: 20px; /* Adds space between the heading and the grid */
+  }
+  
+  /* Cart Item Card */
+  .cart-item-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cart-item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .cart-item-details {
+    padding: 15px;
+    width: 100%;
+  }
+  
+  .cart-item-details h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  .cart-item-details p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .remove-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .remove-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Checkout Section */
+  .checkout-section {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .checkout-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .checkout-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #f8f9fa;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+  }
+  
+  footer p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .cart-item-card {
+      max-width: 100%;
+    }
+  
+    .cart-item-image {
+      height: 150px;
+    }
+  
+    .cart-item-details h3 {
+      font-size: 18px;
+    }
+  
+    .cart-item-details p {
+      font-size: 14px;
+    }
+  
+    .remove-button {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+  

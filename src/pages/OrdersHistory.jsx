@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import '../styles/ordershistory.css';
 import "../styles/Home.css";
 import Header from "../components/Header";
 
