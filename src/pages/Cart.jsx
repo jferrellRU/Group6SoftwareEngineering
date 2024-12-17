@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "../styles/Home.css"; // Reuse the styles from Home
+import '../styles/cart.css';
 import Header from "../components/Header";
 
 const Cart = () => {
@@ -84,8 +85,8 @@ const Cart = () => {
       </header>
 
       <div className="cart-container">
+        <h2>Your Cart</h2>
         <div className="cart-items">
-          <h2>Your Cart</h2>
           {error && <p className="error-message">{error}</p>}
           {cartItems.length > 0 ? (
             cartItems.map((item) => (

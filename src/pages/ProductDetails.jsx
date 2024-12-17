@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import AddReview from "./AddReview";
 import Header from "../components/Header";
+import '../styles/product.css';
 import { UserContext } from "../UserContext";
 
 const ProductDetails = () => {
